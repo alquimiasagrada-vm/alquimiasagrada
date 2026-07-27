@@ -1347,6 +1347,36 @@
   }
   .oracle-send-btn:hover { transform: scale(1.08); }
   .oracle-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  /* ==========================================
+     4. CORRECCIÓN DE HEADER Y BOTONES (MÓVIL)
+     ========================================== */
+  header, .site-header, .navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 15px 5vw;
+    width: 100%;
+    position: relative;
+  }
+
+  /* Forzamos que el título/logo no se desborde */
+  header h1, .site-title, .logo {
+    font-size: clamp(1.8rem, 6vw, 2.3rem) !important;
+    text-align: center;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  /* Aseguramos que el botón o menú de navegación quede debajo ordenado */
+  .nav-links, .header-actions, .btn-sobre-mi {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 
   @media (max-width: 480px) {
     .oracle-toggle-btn { bottom: 18px; left: 18px; width: 52px; height: 52px; }
