@@ -1,8 +1,0 @@
-{
-  "name": "alquimia-sagrada",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "@google/genai": "*"
-  }
-}
