@@ -4,7 +4,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Asegurar que se lea el body correctamente independientemente de cómo lo envíe el cliente
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     const message = body?.message;
 
@@ -33,14 +32,17 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
+    // IMPRIME EL ERROR REAL EN LA CONSOLA DE VERCEL SI ALGO FALLA
     if (!response.ok) {
-      throw new Error(data.error?.message || 'Error al comunicarse con la API de Gemini');
+      console.error("Error detallado de Google API:", JSON.stringify(data));
+      throw new Error(data.error?.message || 'Error desconocido de la API de Gemini');
     }
 
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'El oráculo guarda silencio por ahora...';
 
     return res.status(200).json({ reply });
   } catch (error) {
+    console.error("Excepción en el servidor:", error.message);
     return res.status(500).json({ error: error.message });
   }
 }
