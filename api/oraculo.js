@@ -23,6 +23,14 @@ module.exports = async (req, res) => {
       ? body.history
       : [];
 
+    // Contexto opcional de la Carta Natal, calculado en el frontend por la
+    // calculadora existente. El Oráculo solo lo interpreta: nunca recalcula
+    // posiciones astronómicas. Se acota por las dudas, aunque en la práctica
+    // el resumen que manda el frontend ya es compacto.
+    const natalChart = typeof body?.natalChart === 'string'
+      ? body.natalChart.slice(0, 1500)
+      : null;
+
     if (!message || typeof message !== 'string') {
       return res.status(400).json({
         error: 'Falta el mensaje'
@@ -69,11 +77,7 @@ module.exports = async (req, res) => {
       });
     }
 
-    const requestBody = {
-      systemInstruction: {
-        parts: [
-          {
-            text: `
+    const baseInstruction = `
 Eres el Oráculo de Alquimia Sagrada.
 
 Tu personalidad es sabia, mística, empática y cálida.
@@ -98,7 +102,43 @@ respondé únicamente con la información que realmente
 esté disponible en el contexto que recibas.
 
 No inventes servicios, precios, horarios ni datos.
-            `.trim()
+            `.trim();
+
+    // Bloque adicional, solo si el frontend mandó datos de una carta natal
+    // ya calculada. No reemplaza la instrucción base: se suma a continuación.
+    const natalInstruction = natalChart
+      ? `
+
+A continuación tenés los datos ya calculados de la carta natal de este
+consultante. Fueron calculados por una herramienta astronómica externa:
+no los cuestiones, no los recalcules y no inventes datos adicionales,
+solo interpretalos simbólicamente.
+
+${natalChart}
+
+Para la primera lectura de esta carta: mantenela breve, centrada en
+Sol, Luna y Ascendente, sumando como mucho uno o dos elementos más que
+te parezcan relevantes. Usá un lenguaje simbólico e introspectivo, evitando
+frases deterministas como "esto significa que definitivamente..." o
+"te va a ocurrir...". Preferí formas como "esta configuración puede
+invitarte a...", "podría manifestarse como...", "desde una mirada
+simbólica...".
+
+Cerrá esa primera lectura con una aclaración breve, una sola vez (no la
+repitas en respuestas siguientes sobre la carta): "Esta lectura es una
+interpretación simbólica de tu carta natal y está pensada como una
+herramienta de introspección y autoconocimiento."
+
+En preguntas posteriores sobre la carta (por ejemplo sobre un planeta,
+una casa, o cómo se relaciona con vínculos o decisiones), respondé
+usando estos datos reales, sin repetir la lectura completa cada vez.`
+      : '';
+
+    const requestBody = {
+      systemInstruction: {
+        parts: [
+          {
+            text: (baseInstruction + natalInstruction).trim()
           }
         ]
       },
@@ -206,3 +246,4 @@ No inventes servicios, precios, horarios ni datos.
     });
   }
 };
+
