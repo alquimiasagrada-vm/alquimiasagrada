@@ -4,14 +4,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body;
-    const apiKey = process.env.GEMINI_API_KEY;
+    // Asegurar que se lea el body correctamente independientemente de cómo lo envíe el cliente
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const message = body?.message;
 
-    if (!apiKey) {
-      throw new Error('La variable de entorno GEMINI_API_KEY no está configurada.');
+    if (!message) {
+      return res.status(400).json({ error: 'Falta el mensaje en la petición' });
     }
 
-    // Usamos directamente la API REST oficial de Gemini mediante fetch nativo
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ error: 'La variable GEMINI_API_KEY no está configurada en Vercel' });
+    }
+
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
