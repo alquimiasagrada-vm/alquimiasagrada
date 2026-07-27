@@ -946,53 +946,11 @@
     color: rgba(92, 109, 126, 0.75);
   }
 
-  @media (max-width: 960px) {
-    .scroll-container { flex-direction: column; padding: 0; }
-
-    /* La columna de imagen "sticky" se reemplaza por una foto fija
-       dentro de cada bloque, así nunca queda flotando sobre el texto */
-    .visual-col { display: none; }
-
-    .text-col { width: 100%; padding: 2vh 8vw 8vh; z-index: 2; position: relative; }
-
-    .therapy-item {
-      min-height: 0;
-      opacity: 1;
-      padding: 2.5rem 0;
-      border-bottom: 1px solid rgba(28, 49, 68, 0.08);
-      align-items: center;
-      text-align: center;
-    }
-    .therapy-item:last-child { border-bottom: none; }
-
-    .therapy-item h2 { font-size: clamp(2.1rem, 8vw, 2.6rem); margin-bottom: 1rem; }
-    .therapy-item p { max-width: 100%; font-size: 1rem; }
-    .therapy-benefits { max-width: 100%; text-align: left; }
-    .btn { margin: 0 auto; }
-
-    .item-photo {
-      display: block;
-      width: min(60vw, 260px);
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-radius: 50%;
-      margin: 0 auto 1.5rem;
-      border: 1px solid var(--gold-dim);
-      box-shadow: 0 10px 35px rgba(28, 49, 68, 0.2), 0 0 20px var(--gold-dim);
-      filter: brightness(0.95) contrast(1.05);
-    }
-
-    .music-player { bottom: 15px; right: 15px; padding: 8px 14px; }
-    .music-info { max-width: 130px; }
-    .site-footer { padding: 40px 6vw 30px; text-align: center; }
-    .footer-col { display: flex; flex-direction: column; align-items: center; }
-    .hero-block { padding-top: 12vh; text-align: center; min-height: 55vh; }
-    .hero-block .item-photo { display: block; }
-
-    .natal-section { padding: 70px 6vw; }
-    .natal-result { flex-direction: column; align-items: center; gap: 2rem; }
-    .natal-legend { max-width: 100%; }
+@media (max-width: 960px) {
+  .shooting-star, .cross-flare, .zodiac-bg {
+    display: none !important;
   }
+}
 
   @media (max-width: 420px) {
     .music-info { display: none; }
