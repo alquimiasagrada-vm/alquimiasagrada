@@ -1,48 +1,57 @@
 export default async function handler(req, res) {
+  // Permitir solo peticiones POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
 
   try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    // Manejo seguro del body para asegurarnos de que no llegue vacío
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        body = {};
+      }
+    }
+
     const message = body?.message;
 
     if (!message) {
-      return res.status(400).json({ error: 'Falta el mensaje en la petición' });
+      return res.status(400).json({ error: 'El campo "message" es obligatorio en el JSON' });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return res.status(500).json({ error: 'La variable GEMINI_API_KEY no está configurada en Vercel' });
+      return res.status(500).json({ error: 'Falta configurar la variable GEMINI_API_KEY en Vercel' });
     }
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+    // Petición directa y limpia a la API oficial de Google
+    const apiResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: message }] }],
           systemInstruction: {
-            parts: [{ text: "Eres un oráculo sabio, místico y empático..." }]
+            parts: [{ text: "Eres un oráculo sabio, místico y empático." }]
           }
         })
       }
     );
 
-    const data = await response.json();
+    const data = await apiResponse.json();
 
-    // IMPRIME EL ERROR REAL EN LA CONSOLA DE VERCEL SI ALGO FALLA
-    if (!response.ok) {
-      console.error("Error detallado de Google API:", JSON.stringify(data));
-      throw new Error(data.error?.message || 'Error desconocido de la API de Gemini');
+    if (!apiResponse.ok) {
+      return res.status(500).json({ error: data.error?.message || 'Error al conectar con la API de Google' });
     }
 
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'El oráculo guarda silencio por ahora...';
 
     return res.status(200).json({ reply });
-  } catch (error) {
-    console.error("Excepción en el servidor:", error.message);
-    return res.status(500).json({ error: error.message });
+    
+  } catch (err) {
+    return res.status(500).json({ error: 'Error interno en el servidor: ' + err.message });
   }
 }
