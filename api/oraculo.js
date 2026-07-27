@@ -1,15 +1,12 @@
 module.exports = async (req, res) => {
-  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Solo POST
   if (req.method !== 'POST') {
     return res.status(405).json({
       error: 'Método no permitido'
@@ -22,6 +19,9 @@ module.exports = async (req, res) => {
       : req.body;
 
     const message = body?.message;
+    const history = Array.isArray(body?.history)
+      ? body.history
+      : [];
 
     if (!message || typeof message !== 'string') {
       return res.status(400).json({
@@ -37,85 +37,169 @@ module.exports = async (req, res) => {
       });
     }
 
-    const response = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent',
-      {
-        method: 'POST',
+    // Convertimos el historial del frontend al formato de Gemini.
+    const contents = history
+      .filter(item =>
+        item &&
+        (item.role === 'user' || item.role === 'assistant') &&
+        typeof item.content === 'string'
+      )
+      .map(item => ({
+        role: item.role === 'assistant' ? 'model' : 'user',
+        parts: [
+          {
+            text: item.content
+          }
+        ]
+      }));
 
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': apiKey
-        },
+    // Aseguramos que el último mensaje sea el actual.
+    if (
+      contents.length === 0 ||
+      contents[contents.length - 1].role !== 'user' ||
+      contents[contents.length - 1].parts[0].text !== message
+    ) {
+      contents.push({
+        role: 'user',
+        parts: [
+          {
+            text: message
+          }
+        ]
+      });
+    }
 
-        body: JSON.stringify({
-          systemInstruction: {
-            parts: [
-              {
-                text: `
+    const requestBody = {
+      systemInstruction: {
+        parts: [
+          {
+            text: `
 Eres el Oráculo de Alquimia Sagrada.
 
 Tu personalidad es sabia, mística, empática y cálida.
+
 Responde siempre en español.
-Tu tono debe ser espiritual, poético y cercano, pero claro.
-No afirmes que puedes predecir el futuro con certeza.
-Puedes orientar, reflexionar y acompañar al usuario.
 
-Si el usuario pregunta por las terapias de Alquimia Sagrada,
-responde de manera coherente con la información disponible
-en el sitio web.
-                `.trim()
-              }
-            ]
-          },
+Tu tono debe ser espiritual, poético y cercano,
+pero también claro y comprensible.
 
-          contents: [
-            {
-              role: 'user',
-              parts: [
-                {
-                  text: message
-                }
-              ]
-            }
-          ]
-        })
+Acompañás al usuario desde una perspectiva
+de introspección, simbolismo y espiritualidad.
+
+No afirmes que podés predecir el futuro con certeza.
+No presentes tus respuestas como verdades absolutas.
+
+Podés ofrecer interpretaciones, preguntas para la reflexión,
+orientación espiritual y acompañamiento emocional.
+
+Si el usuario pregunta por Alquimia Sagrada,
+sus terapias, carta natal u otros servicios del sitio,
+respondé únicamente con la información que realmente
+esté disponible en el contexto que recibas.
+
+No inventes servicios, precios, horarios ni datos.
+            `.trim()
+          }
+        ]
+      },
+
+      contents
+    };
+
+    const maxAttempts = 3;
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+
+      try {
+        const response = await fetch(
+          'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent',
+          {
+            method: 'POST',
+
+            headers: {
+              'Content-Type': 'application/json',
+              'x-goog-api-key': apiKey
+            },
+
+            body: JSON.stringify(requestBody)
+          }
+        );
+
+        const data = await response.json();
+
+        console.log(
+          `Gemini attempt ${attempt}:`,
+          response.status
+        );
+
+        // Respuesta correcta
+        if (response.ok) {
+
+          const reply = data?.candidates?.[0]?.content?.parts
+            ?.map(part => part.text || '')
+            .join('')
+            .trim();
+
+          if (reply) {
+            return res.status(200).json({
+              reply
+            });
+          }
+
+          lastError = 'Gemini no devolvió texto.';
+        } else {
+
+          lastError =
+            data?.error?.message ||
+            `Gemini respondió con HTTP ${response.status}`;
+
+          console.error(
+            `Gemini error attempt ${attempt}:`,
+            JSON.stringify(data)
+          );
+
+          // Solo reintentamos errores que pueden ser temporales.
+          const retryable =
+            response.status === 429 ||
+            response.status === 500 ||
+            response.status === 502 ||
+            response.status === 503 ||
+            response.status === 504;
+
+          if (!retryable) {
+            return res.status(response.status).json({
+              error: lastError
+            });
+          }
+        }
+
+      } catch (err) {
+
+        lastError = err.message;
+
+        console.error(
+          `Gemini network error attempt ${attempt}:`,
+          err
+        );
       }
-    );
 
-    const data = await response.json();
-
-    console.log('Gemini status:', response.status);
-
-    if (!response.ok) {
-      console.error('Gemini error:', JSON.stringify(data));
-
-      return res.status(response.status).json({
-        error: data?.error?.message || 'Error en Gemini API',
-        details: data?.error || null
-      });
+      // Esperamos antes del siguiente intento.
+      if (attempt < maxAttempts) {
+        await new Promise(resolve =>
+          setTimeout(resolve, 700 * attempt)
+        );
+      }
     }
 
-    const reply =
-      data?.candidates?.[0]?.content?.parts
-        ?.map(part => part.text || '')
-        .join('')
-        .trim();
-
-    if (!reply) {
-      console.error('Respuesta inesperada de Gemini:', JSON.stringify(data));
-
-      return res.status(500).json({
-        error: 'Gemini no devolvió texto',
-        details: data
-      });
-    }
-
-    return res.status(200).json({
-      reply
+    return res.status(503).json({
+      error: 'El servicio del Oráculo está temporalmente ocupado. Intentá nuevamente en unos segundos.',
+      details: lastError
     });
 
   } catch (err) {
-    console.error('Error crítico:', err);
+
+    console.error('Error crítico del Oráculo:', err);
 
     return res.status(500).json({
       error: 'Fallo crítico: ' + err.message
