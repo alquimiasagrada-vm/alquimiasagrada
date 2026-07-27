@@ -1,5 +1,4 @@
-export default async function handler(req, res) {
-  // Configurar cabeceras CORS por si acaso
+module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -56,4 +55,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: 'Fallo crítico: ' + err.message });
   }
-}
+};
