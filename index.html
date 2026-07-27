@@ -1,4 +1,4 @@
-<!DOCTYPE html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -8,11 +8,6 @@
 <!-- GSAP & ScrollTrigger -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-<!-- Calculadora de Carta Natal: astronomía, zona horaria histórica y fechas -->
-<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tz-lookup@6.1.25/tz.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/luxon@3.7.2/build/global/luxon.min.js"></script>
 
 <!-- Tipografías -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,9 +40,7 @@
     overflow-x: hidden;
   }
 
-  /* =========================================
-     TEXTURA DE GRANO / RUIDO SUTIL
-     ========================================= */
+  /* TEXTURA DE GRANO */
   .grain-overlay {
     position: fixed;
     inset: 0;
@@ -59,9 +52,7 @@
     background-size: 160px 160px;
   }
 
-  /* =========================================
-     HEADER SUPERIOR - ALQUIMIA SAGRADA
-     ========================================= */
+  /* HEADER SUPERIOR */
   .site-header {
     position: fixed;
     top: 0;
@@ -110,9 +101,29 @@
     box-shadow: 0 0 8px var(--gold);
   }
 
-  /* =========================================
-     FONDO CÓSMICO ANIMADO
-     ========================================= */
+  .nav-sobre-mi-btn {
+    position: absolute;
+    left: 25px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--text-main);
+    padding: 6px 16px;
+    border-radius: 50px;
+    border: 1px solid var(--gold-dim);
+    background: rgba(255, 250, 240, 0.6);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+  }
+  .nav-sobre-mi-btn:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px rgba(201, 152, 47, 0.2);
+  }
+
+  /* FONDO CÓSMICO */
   .cosmic-bg {
     position: fixed;
     inset: 0;
@@ -141,148 +152,9 @@
       radial-gradient(1.5px 1.5px at 30% 70%, rgba(201,152,47,0.5) 100%, transparent);
     background-size: 250px 250px;
     opacity: 0.5;
-    animation: starDrift 150s linear infinite;
-    pointer-events: none;
   }
 
-  .stars-layer-2 {
-    position: absolute; inset: 0; z-index: 0;
-    background-image: 
-      radial-gradient(2px 2px at 90% 80%, rgba(47,118,129,0.35) 100%, transparent),
-      radial-gradient(2px 2px at 50% 10%, rgba(201,152,47,0.5) 100%, transparent),
-      radial-gradient(1px 1px at 20% 50%, rgba(201,152,47,0.4) 100%, transparent);
-    background-size: 400px 400px;
-    opacity: 0.5;
-    animation: starDrift 90s linear infinite reverse;
-    pointer-events: none;
-  }
-
-  @keyframes starDrift {
-    0% { transform: rotate(0deg) translateY(0); }
-    100% { transform: rotate(360deg) translateY(100px); }
-  }
-
-  .twinkle-star {
-    position: fixed;
-    width: 2px; height: 2px;
-    background: var(--teal);
-    color: var(--teal);
-    border-radius: 50%;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    animation: twinkle 4s ease-in-out infinite;
-  }
-  .twinkle-star.gold { background: var(--gold); color: var(--gold); }
-
-  @keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.6); }
-    50% { opacity: 1; transform: scale(1.6); box-shadow: 0 0 6px 1px currentColor; }
-  }
-
-  .tw-1 { top: 12%; left: 22%; animation-duration: 3.2s; animation-delay: 0.2s; }
-  .tw-2 { top: 68%; left: 8%; animation-duration: 4.5s; animation-delay: 1.1s; color: var(--gold); }
-  .tw-3 { top: 24%; left: 78%; animation-duration: 3.8s; animation-delay: 2s; }
-  .tw-4 { top: 82%; left: 60%; animation-duration: 5s; animation-delay: 0.6s; color: var(--gold); }
-  .tw-5 { top: 40%; left: 92%; animation-duration: 3.5s; animation-delay: 1.6s; }
-  .tw-6 { top: 55%; left: 35%; animation-duration: 4.2s; animation-delay: 2.6s; color: var(--gold); }
-  .tw-7 { top: 6%; left: 55%; animation-duration: 3.9s; animation-delay: 0.9s; }
-  .tw-8 { top: 90%; left: 15%; animation-duration: 4.7s; animation-delay: 1.9s; }
-
-  .constellation-svg {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    opacity: 0.35;
-  }
-  .constellation-svg circle { fill: var(--gold); }
-  .constellation-svg line {
-    stroke: var(--gold);
-    stroke-width: 0.6;
-    stroke-dasharray: 4 3;
-    animation: constellationFade 8s ease-in-out infinite alternate;
-  }
-  .constellation-svg .const-b line { animation-delay: -3s; }
-
-  @keyframes constellationFade {
-    0% { opacity: 0.15; }
-    100% { opacity: 0.55; }
-  }
-
-  .shooting-star {
-    position: fixed; z-index: 0;
-    width: 2px; height: 80px;
-    background: linear-gradient(to bottom, rgba(201,152,47,0.85), transparent);
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
-  }
-  .ss-1 { top: -10%; left: 30%; animation: shoot 8s linear infinite 2s; }
-  .ss-2 { top: -10%; right: 20%; animation: shoot 12s linear infinite 7s; }
-  .ss-3 { top: 20%; right: -10%; animation: shoot 15s linear infinite 4s; }
-
-  @keyframes shoot {
-    0% { transform: translate(0, 0) rotate(45deg) scale(0); opacity: 0; }
-    5% { transform: translate(-50px, 50px) rotate(45deg) scale(1.5); opacity: 1; }
-    15% { transform: translate(-300px, 300px) rotate(45deg) scale(0); opacity: 0; }
-    100% { opacity: 0; }
-  }
-
-  .cross-flare {
-    position: fixed;
-    width: 2px; height: 2px;
-    background: var(--gold);
-    border-radius: 50%;
-    box-shadow: 0 0 10px 2px rgba(201,152,47,0.5);
-    animation: pulseFlare 5s infinite alternate ease-in-out;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .cross-flare::before, .cross-flare::after {
-    content: ''; position: absolute;
-    top: 50%; left: 50%; transform: translate(-50%, -50%);
-    background: linear-gradient(90deg, transparent, rgba(201,152,47,0.6), transparent);
-  }
-  .cross-flare::before { width: 40px; height: 1px; }
-  .cross-flare::after { width: 1px; height: 40px; }
-  
-  .cf-1 { top: 20%; left: 12%; animation-duration: 4s; }
-  .cf-2 { top: 75%; left: 45%; animation-delay: -2s; animation-duration: 6s; }
-  .cf-3 { top: 30%; right: 18%; animation-delay: -1s; }
-  .cf-4 { top: 85%; right: 35%; animation-delay: -3s; animation-duration: 7s; }
-  .cf-5 { top: 10%; right: 45%; animation-delay: -4s; }
-
-  @keyframes pulseFlare {
-    0% { transform: scale(0.6) rotate(-15deg); opacity: 0.3; }
-    100% { transform: scale(1.2) rotate(15deg); opacity: 1; filter: drop-shadow(0 0 12px var(--gold)); }
-  }
-
-  .zodiac-bg {
-    position: fixed; font-family: serif; color: rgba(28, 49, 68, 0.04);
-    font-size: 7rem; pointer-events: none; z-index: 0;
-    animation: floatZodiac 20s ease-in-out infinite alternate;
-  }
-  .z-1 { top: 15%; left: 5%; }
-  .z-2 { top: 65%; left: 8%; animation-delay: -5s; animation-duration: 25s; }
-  .z-3 { top: 20%; right: 8%; animation-delay: -10s; }
-  .z-4 { top: 80%; right: 12%; animation-delay: -15s; animation-duration: 22s; }
-
-  @keyframes floatZodiac {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    100% { transform: translate(30px, -20px) rotate(10deg); }
-  }
-
-  .hero-block {
-    min-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .hero-block .item-photo { display: none; }
-
+  /* REPRODUCTOR DE MÚSICA */
   .music-player {
     position: fixed;
     bottom: 30px;
@@ -297,7 +169,6 @@
     padding: 10px 18px;
     border-radius: 50px;
     box-shadow: 0 10px 30px rgba(28, 49, 68, 0.12);
-    transition: border-color 0.6s ease, box-shadow 0.6s ease;
   }
 
   .play-btn {
@@ -311,18 +182,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.4s ease, box-shadow 0.4s ease;
     box-shadow: 0 0 15px rgba(201, 152, 47, 0.35);
-    flex-shrink: 0;
-  }
-
-  .play-btn:hover {
-    transform: scale(1.08);
-  }
-
-  .play-icon {
-    font-size: 0.85rem;
-    margin-left: 2px;
   }
 
   .music-info {
@@ -335,51 +195,26 @@
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-main);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .music-subtitle {
     font-size: 0.7rem;
     color: var(--text-muted);
-    letter-spacing: 0.05em;
   }
 
-  .eq-bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 2px;
-    height: 12px;
-    margin-left: 4px;
-  }
-  .eq-bar {
-    width: 2px;
-    background: var(--gold);
-    height: 3px;
-    transition: height 0.2s ease, background 0.4s ease;
-  }
-  .playing .eq-bar:nth-child(1) { animation: bounceEq 0.6s infinite alternate; }
-  .playing .eq-bar:nth-child(2) { animation: bounceEq 0.4s infinite alternate; animation-delay: 0.1s; }
-  .playing .eq-bar:nth-child(3) { animation: bounceEq 0.5s infinite alternate; animation-delay: 0.2s; }
-
-  @keyframes bounceEq {
-    0% { height: 3px; }
-    100% { height: 12px; }
-  }
-
+  /* CONTENEDOR PRINCIPAL DE TERAPIAS */
   .scroll-container {
     display: flex;
     position: relative;
     z-index: 10;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2vh 4vw 0;
+    padding: 8vh 4vw 0;
   }
 
   .text-col {
     width: 50%;
-    padding: 10vh 5vw 10vh 0;
+    padding: 5vh 5vw 15vh 0;
   }
 
   .therapy-item {
@@ -389,36 +224,21 @@
     justify-content: center;
     opacity: 0.2;
     transition: opacity 0.6s ease;
+    margin-bottom: 10vh;
   }
   .therapy-item.active { opacity: 1; }
 
-  .item-photo { display: none; }
-
-  .therapy-item h2,
-  .therapy-item p,
-  .therapy-item .btn,
-  .therapy-item .item-photo {
-    opacity: 0;
-    transform: translateY(26px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .therapy-item.in-view h2 { opacity: 1; transform: translateY(0); }
-  .therapy-item.in-view p { opacity: 1; transform: translateY(0); transition-delay: 0.12s; }
-  .therapy-item.in-view .item-photo { opacity: 1; transform: translateY(0); }
-  .therapy-item.in-view .btn { opacity: 1; transform: translateY(0); transition-delay: 0.55s; }
-
   .therapy-item h2 {
     font-family: var(--font-heading);
-    font-size: clamp(3rem, 4.5vw, 4rem);
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
     font-weight: 700;
     line-height: 1.1;
     margin-bottom: 1.5rem;
     color: var(--ink);
-    text-shadow: 0 2px 10px rgba(28, 49, 68, 0.08);
   }
 
   .therapy-item p {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     line-height: 1.7;
     color: var(--text-muted);
     max-width: 500px;
@@ -435,45 +255,33 @@
     padding-left: 1.5rem;
     margin-bottom: 0.75rem;
     color: var(--text-muted);
-    font-size: 1.05rem;
+    font-size: 1rem;
     line-height: 1.5;
-    opacity: 0;
-    transform: translateX(-16px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
   }
-  .therapy-item.in-view .therapy-benefits li { opacity: 1; transform: translateX(0); }
-  .therapy-item.in-view .therapy-benefits li:nth-child(1) { transition-delay: 0.22s; }
-  .therapy-item.in-view .therapy-benefits li:nth-child(2) { transition-delay: 0.36s; }
-  .therapy-item.in-view .therapy-benefits li:nth-child(3) { transition-delay: 0.5s; }
-
   .therapy-benefits li::before {
     content: '✦';
     position: absolute;
     left: 0;
     color: var(--gold);
-    font-size: 0.9rem;
-    top: 2px;
   }
 
   .btn {
     display: inline-block;
-    position: relative;
-    padding: 1rem 2.5rem;
+    padding: 0.9rem 2.2rem;
     border-radius: 50px;
     background: var(--gold);
     color: var(--ink);
     font-weight: 600;
     text-decoration: none;
     letter-spacing: 1px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     width: fit-content;
     box-shadow: 0 4px 20px rgba(201, 152, 47, 0.35);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
+    transition: transform 0.3s ease;
   }
-  .btn:hover {
-    transform: translateY(-3px);
-  }
+  .btn:hover { transform: translateY(-3px); }
 
+  /* COLUMNA VISUAL (LADO DERECHO) */
   .visual-col {
     width: 50%;
     height: 100vh;
@@ -486,7 +294,7 @@
 
   .portal-frame {
     position: relative;
-    width: min(42vw, 550px);
+    width: min(38vw, 450px);
     aspect-ratio: 1/1;
     border-radius: 50%;
     border: 1px solid var(--gold-dim);
@@ -494,58 +302,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: portalBreathe 5.5s ease-in-out infinite;
+    overflow: hidden;
   }
-
-  @keyframes portalBreathe {
-    0%, 100% {
-      box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 30px var(--gold-dim);
-      border-color: var(--gold-dim);
-    }
-    50% {
-      box-shadow: 0 0 75px rgba(0,0,0,0.8), inset 0 0 45px rgba(201, 152, 47, 0.35), 0 0 30px rgba(201, 152, 47, 0.2);
-      border-color: rgba(201, 152, 47, 0.45);
-    }
-  }
-
-  .nav-sobre-mi-btn {
-    position: absolute;
-    left: 25px;
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    font-weight: 500;
-    text-decoration: none;
-    color: var(--text-main);
-    padding: 6px 16px;
-    border-radius: 50px;
-    border: 1px solid var(--gold-dim);
-    background: rgba(255, 250, 240, 0.6);
-    backdrop-filter: blur(8px);
-    transition: all 0.3s ease;
-  }
-  .nav-sobre-mi-btn:hover {
-    color: var(--gold);
-    border-color: var(--gold);
-    transform: translateY(-1px);
-    box-shadow: 0 0 10px rgba(201, 152, 47, 0.2);
+  
+  .portal-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
   }
 </style>
 </head>
 <body>
 
-  <!-- HEADER FIJO CON EL NOMBRE DEL EMPRENDIMIENTO -->
+  <!-- HEADER FIJO -->
   <header class="site-header">
     <a href="sobre-mi.html" class="nav-sobre-mi-btn">Sobre Mí</a>
     <h1 class="brand-title">Alquimia Sagrada</h1>
   </header>
 
+  <!-- FONDOS Y EFECTOS -->
+  <div class="grain-overlay"></div>
   <div class="cosmic-bg" id="main-bg"></div>
+  <div class="parallax-layer"><div class="stars-layer-1"></div></div>
 
-  <div class="parallax-layer" id="parallax-1"><div class="stars-layer-1"></div></div>
-  <div class="parallax-layer" id="parallax-2"><div class="stars-layer-2"></div></div>
-
-  <!-- REPRODUCTOR FLOTANTE -->
-  <div class="music-player" id="musicPlayerContainer">
+  <!-- REPRODUCTOR FLOTANTE DE AUDIO -->
+  <div class="music-player">
     <button class="play-btn" id="playBtn" onclick="togglePlay()">
       <span class="play-icon" id="playIcon">▶</span>
     </button>
@@ -553,25 +335,82 @@
       <span class="music-title">Frecuencia Cósmica 432Hz</span>
       <span class="music-subtitle">Música de Meditación</span>
     </div>
-    <div class="eq-bars" id="eqBars">
-      <div class="eq-bar dynamic-eq"></div>
-      <div class="eq-bar dynamic-eq"></div>
-      <div class="eq-bar dynamic-eq"></div>
-    </div>
   </div>
 
   <audio id="bg-audio" loop preload="auto">
     <source src="meditacion.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- CONTENIDO PRINCIPAL: SECCIONES DE TERAPIAS -->
   <main class="scroll-container">
     <div class="text-col">
-      <div class="hero-block">
-        <h2 style="font-family: var(--font-heading); font-size: 2.5rem; color: var(--ink);">Bienvenido al Portal</h2>
-        <p>Explora el espacio cósmico y las terapias sagradas diseñadas para tu evolución espiritual.</p>
+      
+      <!-- Terapia 1 -->
+      <section class="therapy-item active" data-bg="radial-gradient(circle at 12% 30%, rgba(76, 155, 163, 0.28) 0%, transparent 45%), radial-gradient(circle at 88% 28%, rgba(224, 178, 90, 0.28) 0%, transparent 50%), #faf3e8">
+        <h2>Astrología Evolutiva</h2>
+        <p>Comprende los tránsitos de tu carta natal como un mapa sagrado para tu evolución consciente y autoconocimiento profundo.</p>
+        <ul class="therapy-benefits">
+          <li>Lectura profunda de nodos lunares y propósito de vida.</li>
+          <li>Tránsitos actuales y herramientas de integración.</li>
+          <li>Sanación de patrones kármicos heredados.</li>
+        </ul>
+        <a href="#contacto" class="btn">Reservar Sesión</a>
+      </section>
+
+      <!-- Terapia 2 -->
+      <section class="therapy-item" data-bg="radial-gradient(circle at 20% 40%, rgba(180, 130, 80, 0.25) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(47, 118, 129, 0.2) 0%, transparent 50%), #faf3e8">
+        <h2>Reiki Celta y Akáshico</h2>
+        <p>Canalización de energía universal para armonizar tus centros energéticos, liberar bloqueos emocionales y restaurar la paz interior.</p>
+        <ul class="therapy-benefits">
+          <li>Armonización profunda de chakras y campo áurico.</li>
+          <li>Liberación de cargas emocionales estancadas.</li>
+          <li>Paz mental y profunda relajación celular.</li>
+        </ul>
+        <a href="#contacto" class="btn">Reservar Sesión</a>
+      </section>
+
+      <!-- Terapia 3 -->
+      <section class="therapy-item" data-bg="radial-gradient(circle at 75% 25%, rgba(47, 118, 129, 0.3) 0%, transparent 50%), radial-gradient(circle at 25% 75%, rgba(201, 152, 47, 0.2) 0%, transparent 50%), #faf3e8">
+        <h2>Tarot Evolutivo y Oráculos</h2>
+        <p>Una herramienta de introspección que ilumina tu presente y te muestra las posibles líneas de tiempo para tomar decisiones alineadas con tu alma.</p>
+        <ul class="therapy-benefits">
+          <li>Claridad absoluta ante momentos de encrucijada.</li>
+          <li>Orientación consciente sin determinismos.</li>
+          <li>Conexión directa con tu guía interior.</li>
+        </ul>
+        <a href="#contacto" class="btn">Reservar Sesión</a>
+      </section>
+
+    </div>
+
+    <!-- COLUMNA VISUAL FIJA -->
+    <div class="visual-col">
+      <div class="portal-frame">
+        <!-- Puedes colocar una imagen aquí o dejar un círculo estético -->
+        <div style="text-align: center; color: var(--gold); font-family: var(--font-heading); font-size: 1.2rem; padding: 20px;">✧ Portal Alquímico ✧</div>
       </div>
     </div>
   </main>
 
+  <!-- Script básico para el botón de música -->
+  <script>
+    const audio = document.getElementById('bg-audio');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    let isPlaying = false;
+
+    function togglePlay() {
+      if (!isPlaying) {
+        audio.play().then(() => {
+          isPlaying = true;
+          playIcon.textContent = '❚❚';
+        }).catch(e => console.log("Audio play blocked:", e));
+      } else {
+        audio.pause();
+        isPlaying = false;
+        playIcon.textContent = '▶';
+      }
+    }
+  </script>
 </body>
 </html>
