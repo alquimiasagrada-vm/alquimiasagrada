@@ -1680,21 +1680,34 @@
       // con puntos intermedios (en vez de un arco SVG) para reutilizar
       // directamente la misma función point() que ya orienta todo el resto
       // de la rueda, evitando desajustes de rotación.
-      function zodiacWedgePath(lonStart, lonEnd, rInner, rOuterEdge) {
-        const steps = 8;
-        let d = '';
-        for (let s = 0; s <= steps; s++) {
-          const lon = lonStart + (lonEnd - lonStart) * (s / steps);
-          const p = point(lon, rOuterEdge);
-          d += (s === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ' ';
-        }
-        for (let s = steps; s >= 0; s--) {
-          const lon = lonStart + (lonEnd - lonStart) * (s / steps);
-          const p = point(lon, rInner);
-          d += 'L' + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ' ';
-        }
-        return d + 'Z';
-      }
+      function zodiacWedgePath(startDeg, endDeg, rInner, rOuterEdge) {
+  const steps = 12;
+  let d = '';
+
+  // Borde exterior
+  for (let s = 0; s <= steps; s++) {
+    const deg = startDeg + (endDeg - startDeg) * (s / steps);
+    const angle = toRad(180 + (deg - chart.asc));
+    const x = cx + rOuterEdge * Math.cos(angle);
+    const y = cy - rOuterEdge * Math.sin(angle);
+
+    d += (s === 0 ? 'M' : 'L') +
+      x.toFixed(2) + ',' + y.toFixed(2) + ' ';
+  }
+
+  // Borde interior, en sentido inverso
+  for (let s = steps; s >= 0; s--) {
+    const deg = startDeg + (endDeg - startDeg) * (s / steps);
+    const angle = toRad(180 + (deg - chart.asc));
+    const x = cx + rInner * Math.cos(angle);
+    const y = cy - rInner * Math.sin(angle);
+
+    d += 'L' +
+      x.toFixed(2) + ',' + y.toFixed(2) + ' ';
+  }
+
+  return d + 'Z';
+}
 
       let svg = `<svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">`;
 
@@ -1706,22 +1719,28 @@
       // capricornio, acuario, piscis) — no hace falta tocar este código: si el
       // archivo no existe todavía, la imagen simplemente no se muestra.
       svg += '<defs>';
-      ZODIAC_SIGNS.forEach((s, i) => {
-        svg += `<clipPath id="zodiacClip${i}"><path d="${zodiacWedgePath(i * 30, i * 30 + 30, rSignRing, rOuter)}"/></clipPath>`;
-      });
-      svg += '</defs>';
+ZODIAC_SIGNS.forEach((s, i) => {
+  svg += `<clipPath id="zodiacClip${i}" clipPathUnits="userSpaceOnUse">` +
+    `<path d="${zodiacWedgePath(i * 30, i * 30 + 30, rSignRing, rOuter)}"/>` +
+    `</clipPath>`;
+});
+svg += '</defs>';
 
       svg += '<g class="natal-zodiac-bg">';
+
 ZODIAC_SIGNS.forEach((s, i) => {
-  svg += `<image href="/assets/zodiac/${s.slug}.png"
-    x="${cx - rOuter}"
-    y="${cy - rOuter}"
-    width="${rOuter * 2}"
-    height="${rOuter * 2}"
-    preserveAspectRatio="xMidYMid slice"
-    opacity="1"
-    onerror="console.error('No se pudo cargar:', '/assets/zodiac/${s.slug}.png')"/>`;
+  svg += `<g clip-path="url(#zodiacClip${i})">` +
+    `<image href="/assets/zodiac/${s.slug}.png"
+      x="${cx - rOuter}"
+      y="${cy - rOuter}"
+      width="${rOuter * 2}"
+      height="${rOuter * 2}"
+      preserveAspectRatio="xMidYMid slice"
+      opacity="0.65"
+      onerror="console.error('No se pudo cargar:', '/assets/zodiac/${s.slug}.png')"/>` +
+    `</g>`;
 });
+
 svg += '</g>';
 
       svg += `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="var(--gold-dim)" stroke-width="1.5"/>`;
