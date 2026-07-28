@@ -1714,7 +1714,7 @@
       svg += '<g class="natal-zodiac-bg">';
       ZODIAC_SIGNS.forEach((s, i) => {
         svg += `<g clip-path="url(#zodiacClip${i})">` +
-          `<image href="assets/zodiac/${s.slug}.png" x="${cx - rOuter}" y="${cy - rOuter}" ` +
+          `<image href="/assets/zodiac/${s.slug}.png" x="${cx - rOuter}" y="${cy - rOuter}" ` +
           `width="${rOuter * 2}" height="${rOuter * 2}" preserveAspectRatio="xMidYMid slice" ` +
           `opacity="0.4" onerror="this.style.display='none'"/></g>`;
       });
