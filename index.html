@@ -1712,13 +1712,13 @@
       svg += '</defs>';
 
       svg += '<g class="natal-zodiac-bg">';
-      ZODIAC_SIGNS.forEach((s, i) => {
-        svg += `<g clip-path="url(#zodiacClip${i})">` +
-          `<image href="/assets/zodiac/${s.slug}.png" x="${cx - rOuter}" y="${cy - rOuter}" ` +
-          `width="${rOuter * 2}" height="${rOuter * 2}" preserveAspectRatio="xMidYMid slice" ` +
-          `opacity="0.4" onerror="this.style.display='none'"/></g>`;
-      });
-      svg += '</g>';
+ZODIAC_SIGNS.forEach((s, i) => {
+  svg += `<g clip-path="url(#zodiacClip${i})">` +
+    `<image href="/assets/zodiac/${s.slug}.png" x="${cx - rOuter}" y="${cy - rOuter}" ` +
+    `width="${rOuter * 2}" height="${rOuter * 2}" preserveAspectRatio="xMidYMid slice" ` +
+    `opacity="1" onerror="this.style.display='none'"/></g>`;
+});
+svg += '</g>';
 
       svg += `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="var(--gold-dim)" stroke-width="1.5"/>`;
       svg += `<circle cx="${cx}" cy="${cy}" r="${rSignRing}" fill="none" stroke="var(--gold-dim)" stroke-width="1"/>`;
