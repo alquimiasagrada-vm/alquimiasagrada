@@ -915,40 +915,83 @@
   }
   .tarot-shuffle-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
-  /* ---- Abanico de 22 cartas ---- */
-  .tarot-fan {
+  /* ---- Fila de 22 cartas superpuestas, con scroll horizontal ---- */
+  .tarot-fan-wrap {
     position: relative;
-    width: 100%;
-    height: 230px;
     margin: 0 auto;
-    max-width: 480px;
+    max-width: 640px;
   }
-  .tarot-fan[hidden] { display: none; }
+  .tarot-fan-wrap[hidden] { display: none; }
+
+  .tarot-fan-wrap::before,
+  .tarot-fan-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 36px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .tarot-fan-wrap::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg-base), transparent);
+  }
+  .tarot-fan-wrap::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--bg-base), transparent);
+  }
+
+  .tarot-scroll-hint {
+    font-size: 0.8rem;
+    color: rgba(92, 109, 126, 0.8);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  .tarot-fan {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    padding: 24px 46vw 30px 12vw;
+    scrollbar-width: none;
+  }
+  .tarot-fan::-webkit-scrollbar { display: none; }
 
   .tarot-instruction {
     font-family: var(--font-heading);
     font-style: italic;
     color: var(--gold);
     font-size: 1.2rem;
-    margin-bottom: 1.4rem;
+    margin-bottom: 1rem;
     letter-spacing: 0.03em;
   }
 
   .tarot-card-btn {
-    position: absolute;
-    bottom: -160px;
-    left: 50%;
-    width: 58px;
-    height: 92px;
-    margin-left: -29px;
-    transform-origin: 50% 260px;
+    position: relative;
+    flex: 0 0 auto;
+    width: 92px;
+    height: 146px;
+    margin-left: -38px;
+    scroll-snap-align: center;
     transform: rotate(var(--tarot-angle, 0deg));
-    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    transition: transform 0.4s ease, margin 0.3s ease, opacity 0.5s ease;
     cursor: pointer;
     border: none;
     background: none;
     padding: 0;
     perspective: 800px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .tarot-card-btn:first-child { margin-left: 0; }
+  .tarot-card-btn:active,
+  .tarot-card-btn:focus-visible {
+    transform: translateY(-14px) rotate(var(--tarot-angle, 0deg)) scale(1.06);
+    z-index: 50 !important;
   }
   .tarot-card-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
@@ -957,6 +1000,7 @@
     transition: transform 0.55s ease-in-out;
   }
 
+  .tarot-fan.tarot-locked { overflow: visible; }
   .tarot-fan.tarot-locked .tarot-card-btn {
     pointer-events: none;
   }
@@ -965,7 +1009,6 @@
   }
   .tarot-fan.tarot-locked .tarot-card-btn:not(.tarot-chosen) {
     opacity: 0;
-    transition: opacity 0.5s ease;
   }
 
   .tarot-card-inner {
@@ -983,7 +1026,7 @@
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid var(--gold-dim);
     box-shadow: 0 6px 18px rgba(28, 49, 68, 0.18);
     display: flex;
@@ -1000,7 +1043,7 @@
   .tarot-card-back-face::before {
     content: '✦';
     color: var(--gold);
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     text-shadow: 0 0 8px rgba(201, 152, 47, 0.6);
   }
   .tarot-card-back-face img {
@@ -1016,33 +1059,33 @@
     background: linear-gradient(165deg, #fffaf0, #f3e8d3);
     transform: rotateY(180deg);
     flex-direction: column;
-    padding: 6px;
-    gap: 2px;
+    padding: 8px;
+    gap: 3px;
   }
   .tarot-card-numeral {
     font-family: var(--font-heading);
     font-weight: 700;
     color: var(--gold);
-    font-size: 0.85rem;
+    font-size: 1.1rem;
   }
   .tarot-card-art {
     width: 100%;
     flex: 1;
-    border-radius: 4px;
+    border-radius: 5px;
     border: 1px dashed var(--gold-dim);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--gold);
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     overflow: hidden;
   }
   .tarot-card-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .tarot-card-name-small {
-    font-size: 0.55rem;
+    font-size: 0.68rem;
     color: var(--ink);
     text-align: center;
-    line-height: 1.15;
+    line-height: 1.2;
   }
 
   /* ---- Revelación ---- */
@@ -1059,14 +1102,14 @@
   .tarot-reveal[hidden] { display: none; }
 
   .tarot-card-big {
-    width: min(58vw, 230px);
+    width: min(64vw, 260px);
     aspect-ratio: 58/92;
     perspective: 1200px;
   }
   .tarot-card-big .tarot-card-inner { transform: rotateY(180deg); }
-  .tarot-card-big .tarot-card-numeral { font-size: 1.4rem; }
-  .tarot-card-big .tarot-card-name-small { font-size: 0.85rem; padding: 0 4px 4px; }
-  .tarot-card-big .tarot-card-art { font-size: 2.2rem; }
+  .tarot-card-big .tarot-card-numeral { font-size: 1.5rem; }
+  .tarot-card-big .tarot-card-name-small { font-size: 0.9rem; padding: 0 4px 4px; }
+  .tarot-card-big .tarot-card-art { font-size: 2.4rem; }
 
   .tarot-info { max-width: 480px; }
   .tarot-info-heading {
@@ -1100,14 +1143,16 @@
   }
 
   @media (min-width: 640px) {
-    .tarot-fan { height: 280px; max-width: 620px; }
+    .tarot-fan-wrap { max-width: 760px; }
+    .tarot-fan { padding: 26px 40vw 32px 8vw; }
     .tarot-card-btn {
-      width: 68px;
-      height: 108px;
-      margin-left: -34px;
-      bottom: -190px;
-      transform-origin: 50% 300px;
+      width: 118px;
+      height: 188px;
+      margin-left: -46px;
     }
+    .tarot-card-numeral { font-size: 1.3rem; }
+    .tarot-card-art { font-size: 2rem; }
+    .tarot-card-name-small { font-size: 0.78rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1497,13 +1542,16 @@
       </div>
 
       <p class="tarot-instruction" id="tarot-instruction" hidden>Elegí una carta</p>
-      <div class="tarot-fan" id="tarot-fan" hidden></div>
+      <p class="tarot-scroll-hint" id="tarot-scroll-hint" hidden>Deslizá para ver todas las cartas →</p>
+      <div class="tarot-fan-wrap" id="tarot-fan-wrap" hidden>
+        <div class="tarot-fan" id="tarot-fan"></div>
+      </div>
 
       <div class="tarot-reveal" id="tarot-reveal" hidden>
         <div class="tarot-card-big" id="tarot-card-big">
           <div class="tarot-card-inner">
             <div class="tarot-card-face tarot-card-back-face">
-              <img src="assets/tarot/card-back.png" alt="" onerror="this.remove()">
+              <img src="assets/tarot/card-back.jpg" alt="" onerror="this.remove()">
             </div>
             <div class="tarot-card-face tarot-card-front-face">
               <span class="tarot-card-numeral" id="tarot-big-numeral"></span>
@@ -2068,7 +2116,9 @@
     const stage = document.getElementById('tarot-stage');
     const inviteEl = document.getElementById('tarot-invite');
     const shuffleBtn = document.getElementById('tarot-shuffle-btn');
+    const fanWrapEl = document.getElementById('tarot-fan-wrap');
     const fanEl = document.getElementById('tarot-fan');
+    const scrollHintEl = document.getElementById('tarot-scroll-hint');
     const instructionEl = document.getElementById('tarot-instruction');
     const revealEl = document.getElementById('tarot-reveal');
     const bigNumeralEl = document.getElementById('tarot-big-numeral');
@@ -2086,7 +2136,7 @@
 
     // Dorso único para las 22 cartas. El navegador lo pide una sola vez y
     // usa caché para el resto (aunque se referencie 23 veces en la página).
-    const TAROT_BACK_IMAGE = 'assets/tarot/card-back.png';
+    const TAROT_BACK_IMAGE = 'assets/tarot/card-back.jpg';
     function cardBackHTML() {
       return '<img src="' + TAROT_BACK_IMAGE + '" alt="" ' +
         'onerror="this.remove()">';
@@ -2098,12 +2148,13 @@
       fanEl.innerHTML = '';
       const total = TAROT_ARCANA.length;
       TAROT_ARCANA.forEach((card, i) => {
-        const angle = (i - (total - 1) / 2) * 6.4; // grados de apertura del abanico
+        const angle = (i - (total - 1) / 2) * 1.7; // apertura sutil, la escala principal ahora es el tamaño
 
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'tarot-card-btn';
         btn.style.setProperty('--tarot-angle', angle + 'deg');
+        btn.style.zIndex = i;
         btn.setAttribute('aria-label', 'Elegir una carta');
         btn.dataset.index = i;
 
@@ -2123,7 +2174,7 @@
       shuffleBtn.disabled = true;
 
       inviteEl.hidden = true;
-      fanEl.hidden = false;
+      fanWrapEl.hidden = false;
       buildFan();
 
       const cards = Array.from(fanEl.querySelectorAll('.tarot-card-btn'));
@@ -2165,6 +2216,7 @@
       });
       setTimeout(() => {
         instructionEl.hidden = false;
+        scrollHintEl.hidden = false;
       }, prefersReducedMotion ? 0 : 400);
     }
 
@@ -2175,7 +2227,9 @@
       const card = TAROT_ARCANA[index];
       fanEl.classList.add('tarot-locked');
       btn.classList.add('tarot-chosen');
+      btn.style.zIndex = 999;
       instructionEl.hidden = true;
+      scrollHintEl.hidden = true;
 
       // Completa el frente de la carta elegida recién ahora (evita pedir
       // las 22 imágenes de antemano).
@@ -2201,13 +2255,13 @@
     // muestra un placeholder acorde a la estética del sitio.
     function cardArtHTML(card) {
       return (
-        '<img src="assets/tarot/' + card.slug + '.png" alt="' + card.name + '" ' +
+        '<img src="assets/tarot/' + card.slug + '.jpg" alt="' + card.name + '" ' +
         'onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{textContent:\'✦\'}))">'
       );
     }
 
     function showReveal(card) {
-      fanEl.hidden = true;
+      fanWrapEl.hidden = true;
 
       bigNumeralEl.textContent = card.numeral;
       bigArtEl.innerHTML = cardArtHTML(card);
