@@ -1720,24 +1720,41 @@
       // archivo no existe todavía, la imagen simplemente no se muestra.
       
 
-      svg += '<g class="natal-zodiac-bg">';
+      svg += '<defs>';
 
 ZODIAC_SIGNS.forEach((s, i) => {
-  const angle = i * 30 + 15;
-
   svg += `
-    <g transform="rotate(${angle} ${cx} ${cy})">
+    <pattern
+      id="zodiacPattern${i}"
+      patternUnits="userSpaceOnUse"
+      x="0"
+      y="0"
+      width="${size}"
+      height="${size}"
+    >
       <image
         href="/assets/zodiac/${s.slug}.png"
-        x="${cx - 190}"
-        y="${cy - 190}"
-        width="380"
-        height="380"
+        x="0"
+        y="0"
+        width="${size}"
+        height="${size}"
         preserveAspectRatio="xMidYMid slice"
         opacity="0.65"
-        onerror="console.error('No se pudo cargar:', '/assets/zodiac/${s.slug}.png')"
       />
-    </g>
+    </pattern>
+  `;
+});
+
+svg += '</defs>';
+
+svg += '<g class="natal-zodiac-bg">';
+
+ZODIAC_SIGNS.forEach((s, i) => {
+  svg += `
+    <path
+      d="${zodiacWedgePath(i * 30, i * 30 + 30, rSignRing, rOuter)}"
+      fill="url(#zodiacPattern${i})"
+    />
   `;
 });
 
