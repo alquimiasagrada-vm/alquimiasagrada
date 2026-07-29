@@ -1747,18 +1747,21 @@ ZODIAC_SIGNS.forEach((s, i) => {
 
 svg += '</defs>';
 
-svg += '<g class="natal-zodiac-bg">';
+const sun = chart.planets.find(p => p.key === 'Sun');
+const sunSign = signOf(sun.lon);
 
-ZODIAC_SIGNS.forEach((s, i) => {
-  svg += `
-    <path
-      d="${zodiacWedgePath(i * 30, i * 30 + 30, rSignRing, rOuter)}"
-      fill="url(#zodiacPattern${i})"
-    />
-  `;
-});
-
-svg += '</g>';
+svg += `
+  <image
+    href="/assets/zodiac/${sunSign.sign.slug}.png"
+    x="${cx - 170}"
+    y="${cy - 170}"
+    width="340"
+    height="340"
+    preserveAspectRatio="xMidYMid meet"
+    opacity="0.22"
+    onerror="console.error('No se pudo cargar la imagen del signo solar:', '/assets/zodiac/${sunSign.sign.slug}.png')"
+  />
+`;
 
       svg += `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="var(--gold-dim)" stroke-width="1.5"/>`;
       svg += `<circle cx="${cx}" cy="${cy}" r="${rSignRing}" fill="none" stroke="var(--gold-dim)" stroke-width="1"/>`;
