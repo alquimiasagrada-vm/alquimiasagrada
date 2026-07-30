@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alquimia Sagrada · Terapias Cósmicas</title>
+
+<!-- Preconexión temprana a los CDNs (los scripts se cargan al final del body
+     para no bloquear el primer renderizado; esto solo adelanta el DNS/TLS) -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+<!-- Tipografías: auto-alojadas en assets/fonts/ (ver bloque @font-face mas abajo) -->
+
+<style>
+  /* =========================================
+     TIPOGRAFÍAS AUTO-ALOJADAS
+     Colocá los archivos reales en assets/fonts/ (mismo nombre exacto).
+     Mientras no estén, el navegador cae directo a la fuente de reemplazo
+     definida en --font-heading/--font-script/--font-body (sin roturas).
+     ========================================= */
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-SemiBold.ttf') format('truetype');
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-Bold.ttf') format('truetype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-Italic.ttf') format('truetype');
+    font-weight: 400; font-style: italic; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600; font-style: italic; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Tangerine';
+    src: url('assets/fonts/Tangerine-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Tangerine';
+    src: url('assets/fonts/Tangerine-Bold.ttf') format('truetype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/Manrope-Light.ttf') format('truetype');
+    font-weight: 300; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/Manrope-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/Manrope-Medium.ttf') format('truetype');
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/Manrope-SemiBold.ttf') format('truetype');
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+
+  :root {
+    --bg-base: #faf3e8;
+    --ink: #1c3144;
+    --text-main: #223449;
+    --text-muted: #5c6d7e;
+    --gold: #c9982f;
+    --gold-dim: rgba(201, 152, 47, 0.22);
+    --teal: #2f7681;
+    --teal-dim: rgba(47, 118, 129, 0.2);
+    --font-heading: 'Cormorant Garamond', serif;
+    --font-script: 'Tangerine', cursive;
+    --font-body: 'Manrope', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* Desactiva selección de texto, el resaltado táctil celeste al tocar y
+     arrastrar, y el menú de "guardar imagen"/callout al mantener presionado.
+     Se reactiva la selección dentro de los campos de formulario para que
+     sigan siendo usables con normalidad. */
+  html {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  input, textarea, select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+
+  html { scroll-behavior: smooth; }
+  
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  /* =========================================
+     TEXTURA DE GRANO / RUIDO SUTIL
+     ========================================= */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 160px 160px;
+  }
+
+  /* =========================================
+     HEADER SUPERIOR - ALQUIMIA SAGRADA
+     ========================================= */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 90;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 20px;
+    background: rgba(250, 243, 232, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201, 152, 47, 0.15);
+  }
+
+  .brand-title {
+    font-family: var(--font-script);
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--gold);
+    background: linear-gradient(100deg, var(--ink) 20%, var(--gold) 40%, #fff8e2 50%, var(--gold) 60%, var(--ink) 80%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(201, 152, 47, 0.15);
+    position: relative;
+    animation: titleShimmer 6s linear infinite;
+    cursor: pointer;
+  }
+
+  @keyframes titleShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .brand-title::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+
+  /* =========================================
+     FONDO CÓSMICO ANIMADO
+     ========================================= */
+  .cosmic-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 12% 30%, rgba(76, 155, 163, 0.28) 0%, transparent 45%),
+      radial-gradient(circle at 88% 28%, rgba(224, 178, 90, 0.28) 0%, transparent 50%),
+      var(--bg-base);
+    transition: background 1.2s ease;
+  }
+
+  /* Wrapper que recibe el desplazamiento de parallax por scroll (JS),
+     dejando la animación de rotación propia de cada capa intacta */
+  .parallax-layer {
+    position: fixed;
+    inset: -50%;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .stars-layer-1 {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: 
+      radial-gradient(1px 1px at 10% 20%, rgba(201,152,47,0.55) 100%, transparent),
+      radial-gradient(1px 1px at 80% 40%, rgba(47,118,129,0.45) 100%, transparent),
+      radial-gradient(1.5px 1.5px at 30% 70%, rgba(201,152,47,0.5) 100%, transparent);
+    background-size: 250px 250px;
+    opacity: 0.5;
+    animation: starDrift 150s linear infinite;
+    pointer-events: none;
+  }
+
+  .stars-layer-2 {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: 
+      radial-gradient(2px 2px at 90% 80%, rgba(47,118,129,0.35) 100%, transparent),
+      radial-gradient(2px 2px at 50% 10%, rgba(201,152,47,0.5) 100%, transparent),
+      radial-gradient(1px 1px at 20% 50%, rgba(201,152,47,0.4) 100%, transparent);
+    background-size: 400px 400px;
+    opacity: 0.5;
+    animation: starDrift 90s linear infinite reverse;
+    pointer-events: none;
+  }
+
+  @keyframes starDrift {
+    0% { transform: rotate(0deg) translateY(0); }
+    100% { transform: rotate(360deg) translateY(100px); }
+  }
+
+  /* =========================================
+     TWINKLE ALEATORIO
+     ========================================= */
+  .twinkle-star {
+    position: fixed;
+    width: 2px; height: 2px;
+    background: var(--teal);
+    color: var(--teal);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  .twinkle-star.gold { background: var(--gold); color: var(--gold); }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.6); }
+    50% { opacity: 1; transform: scale(1.6); box-shadow: 0 0 6px 1px currentColor; }
+  }
+
+  .tw-1 { top: 12%; left: 22%; animation-duration: 3.2s; animation-delay: 0.2s; }
+  .tw-2 { top: 68%; left: 8%; animation-duration: 4.5s; animation-delay: 1.1s; color: var(--gold); }
+  .tw-3 { top: 24%; left: 78%; animation-duration: 3.8s; animation-delay: 2s; }
+  .tw-4 { top: 82%; left: 60%; animation-duration: 5s; animation-delay: 0.6s; color: var(--gold); }
+  .tw-5 { top: 40%; left: 92%; animation-duration: 3.5s; animation-delay: 1.6s; }
+  .tw-6 { top: 55%; left: 35%; animation-duration: 4.2s; animation-delay: 2.6s; color: var(--gold); }
+  .tw-7 { top: 6%; left: 55%; animation-duration: 3.9s; animation-delay: 0.9s; }
+  .tw-8 { top: 90%; left: 15%; animation-duration: 4.7s; animation-delay: 1.9s; }
+
+  /* =========================================
+     CONSTELACIÓN SVG
+     ========================================= */
+  .constellation-svg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.35;
+  }
+  .constellation-svg circle { fill: var(--gold); }
+  .constellation-svg line {
+    stroke: var(--gold);
+    stroke-width: 0.6;
+    stroke-dasharray: 4 3;
+    animation: constellationFade 8s ease-in-out infinite alternate;
+  }
+  .constellation-svg .const-b line { animation-delay: -3s; }
+
+  @keyframes constellationFade {
+    0% { opacity: 0.15; }
+    100% { opacity: 0.55; }
+  }
+
+  .shooting-star {
+    position: fixed; z-index: 0;
+    width: 2px; height: 80px;
+    background: linear-gradient(to bottom, rgba(201,152,47,0.85), transparent);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .ss-1 { top: -10%; left: 30%; animation: shoot 8s linear infinite 2s; }
+  .ss-2 { top: -10%; right: 20%; animation: shoot 12s linear infinite 7s; }
+  .ss-3 { top: 20%; right: -10%; animation: shoot 15s linear infinite 4s; }
+
+  @keyframes shoot {
+    0% { transform: translate(0, 0) rotate(45deg) scale(0); opacity: 0; }
+    5% { transform: translate(-50px, 50px) rotate(45deg) scale(1.5); opacity: 1; }
+    15% { transform: translate(-300px, 300px) rotate(45deg) scale(0); opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  .cross-flare {
+    position: fixed;
+    width: 2px; height: 2px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px rgba(201,152,47,0.5);
+    animation: pulseFlare 5s infinite alternate ease-in-out;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .cross-flare::before, .cross-flare::after {
+    content: ''; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: linear-gradient(90deg, transparent, rgba(201,152,47,0.6), transparent);
+  }
+  .cross-flare::before { width: 40px; height: 1px; }
+  .cross-flare::after { width: 1px; height: 40px; }
+  
+  .cf-1 { top: 20%; left: 12%; animation-duration: 4s; }
+  .cf-2 { top: 75%; left: 45%; animation-delay: -2s; animation-duration: 6s; }
+  .cf-3 { top: 30%; right: 18%; animation-delay: -1s; }
+  .cf-4 { top: 85%; right: 35%; animation-delay: -3s; animation-duration: 7s; }
+  .cf-5 { top: 10%; right: 45%; animation-delay: -4s; }
+
+  @keyframes pulseFlare {
+    0% { transform: scale(0.6) rotate(-15deg); opacity: 0.3; }
+    100% { transform: scale(1.2) rotate(15deg); opacity: 1; filter: drop-shadow(0 0 12px var(--gold)); }
+  }
+
+  .zodiac-bg {
+    position: fixed; font-family: serif; color: rgba(28, 49, 68, 0.04);
+    font-size: 7rem; pointer-events: none; z-index: 0;
+    animation: floatZodiac 20s ease-in-out infinite alternate;
+  }
+  .z-1 { top: 15%; left: 5%; }
+  .z-2 { top: 65%; left: 8%; animation-delay: -5s; animation-duration: 25s; }
+  .z-3 { top: 20%; right: 8%; animation-delay: -10s; }
+  .z-4 { top: 80%; right: 12%; animation-delay: -15s; animation-duration: 22s; }
+
+  @keyframes floatZodiac {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(30px, -20px) rotate(10deg); }
+  }
+
+  /* =========================================
+     INTRODUCCIÓN / TYPEWRITER (SEMI-CURSIVA)
+     ========================================= */
+  .hero-block {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .hero-block .item-photo { display: none; }
+
+  .typewriter-container {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    color: var(--gold);
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    min-height: 3.2em; /* Espacio reservado para evitar saltos */
+    text-shadow: 0 0 15px rgba(201, 152, 47, 0.15);
+  }
+
+  .brand-tagline {
+    font-family: var(--font-script);
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+    color: var(--teal);
+    margin-top: 0.5rem;
+  }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: var(--gold);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blinkCursor 0.8s infinite;
+  }
+
+  @keyframes blinkCursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* =========================================
+     REPRODUCTOR DE MÚSICA MINIMALISTA
+     ========================================= */
+  .music-player {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 250, 240, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--gold-dim);
+    padding: 10px 18px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(28, 49, 68, 0.12);
+    transition: border-color 0.6s ease, box-shadow 0.6s ease;
+  }
+
+  .play-btn {
+    background: var(--gold);
+    color: #fff8ea;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 0 15px rgba(201, 152, 47, 0.35);
+    flex-shrink: 0;
+  }
+
+  .play-btn:hover {
+    transform: scale(1.08);
+  }
+
+  .play-icon {
+    font-size: 0.85rem;
+    margin-left: 2px;
+  }
+
+  .music-info {
+    display: flex;
+    flex-direction: column;
+    max-width: 180px;
+  }
+
+  .music-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .music-subtitle {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .eq-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+    margin-left: 4px;
+  }
+  .eq-bar {
+    width: 2px;
+    background: var(--gold);
+    height: 3px;
+    transform-origin: bottom;
+    transition: background 0.4s ease;
+  }
+  .playing .eq-bar:nth-child(1) { animation: bounceEq 0.6s infinite alternate; }
+  .playing .eq-bar:nth-child(2) { animation: bounceEq 0.4s infinite alternate; animation-delay: 0.1s; }
+  .playing .eq-bar:nth-child(3) { animation: bounceEq 0.5s infinite alternate; animation-delay: 0.2s; }
+
+  @keyframes bounceEq {
+    0% { transform: scaleY(1); }
+    100% { transform: scaleY(4); }
+  }
+    100% { transform: scaleY(4); }
+  }
+
+  /* =========================================
+     LAYOUT SPLIT SCROLL
+     ========================================= */
+  .scroll-container {
+    display: flex;
+    position: relative;
+    z-index: 10;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2vh 4vw 0;
+  }
+
+  .text-col {
+    width: 50%;
+    padding: 10vh 5vw 10vh 0;
+  }
+
+  .therapy-item {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0.2;
+    transition: opacity 0.6s ease;
+  }
+  .therapy-item.active { opacity: 1; }
+
+  .item-photo { display: none; }
+
+  /* =========================================
+     FADE-UP AL ENTRAR EN PANTALLA
+     (la clase .in-view se agrega por JS via IntersectionObserver)
+     ========================================= */
+  .therapy-item h2,
+  .therapy-item p,
+  .therapy-item .btn,
+  .therapy-item .item-photo {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .therapy-item.in-view h2 { opacity: 1; transform: translateY(0); }
+  .therapy-item.in-view p { opacity: 1; transform: translateY(0); transition-delay: 0.12s; }
+  .therapy-item.in-view .item-photo { opacity: 1; transform: translateY(0); }
+  .therapy-item.in-view .btn { opacity: 1; transform: translateY(0); transition-delay: 0.55s; }
+
+  .therapy-item h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 4.5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+    text-shadow: 0 2px 10px rgba(28, 49, 68, 0.08);
+  }
+
+  .therapy-item p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin-bottom: 1.5rem;
+  }
+
+  .therapy-benefits {
+    list-style: none;
+    margin-bottom: 2rem;
+    max-width: 500px;
+  }
+  .therapy-benefits li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateX(-16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .therapy-item.in-view .therapy-benefits li { opacity: 1; transform: translateX(0); }
+  .therapy-item.in-view .therapy-benefits li:nth-child(1) { transition-delay: 0.22s; }
+  .therapy-item.in-view .therapy-benefits li:nth-child(2) { transition-delay: 0.36s; }
+  .therapy-item.in-view .therapy-benefits li:nth-child(3) { transition-delay: 0.5s; }
+
+  .therapy-benefits li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.9rem;
+    top: 2px;
+  }
+  /* Destello secuencial de cada ícono al entrar en pantalla */
+  .therapy-item.in-view .therapy-benefits li:nth-child(1)::before { animation: iconFlash 0.6s ease-out 0.3s both; }
+  .therapy-item.in-view .therapy-benefits li:nth-child(2)::before { animation: iconFlash 0.6s ease-out 0.44s both; }
+  .therapy-item.in-view .therapy-benefits li:nth-child(3)::before { animation: iconFlash 0.6s ease-out 0.58s both; }
+
+  @keyframes iconFlash {
+    0% { transform: scale(0.2); opacity: 0; text-shadow: none; }
+    55% { transform: scale(1.5); opacity: 1; text-shadow: 0 0 12px var(--gold); }
+    100% { transform: scale(1); opacity: 1; text-shadow: 0 0 4px rgba(201, 152, 47, 0.5); }
+  }
+
+  .btn {
+    display: inline-block;
+    position: relative;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    width: fit-content;
+    box-shadow: 0 4px 20px rgba(201, 152, 47, 0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
+  }
+  .btn:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Partícula de energía que recorre el borde del botón al hacer hover */
+  .btn::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px 3px rgba(255, 255, 255, 0.9), 0 0 16px 4px var(--gold);
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .btn:hover::after {
+    animation: sparkOrbit 1.6s linear infinite;
+  }
+
+  @keyframes sparkOrbit {
+    0%   { top: 4%;  left: 2%;  opacity: 1; }
+    24%  { top: 4%;  left: 96%; opacity: 1; }
+    26%  { top: 4%;  left: 96%; opacity: 0.7; }
+    49%  { top: 96%; left: 96%; opacity: 1; }
+    51%  { top: 96%; left: 96%; opacity: 0.7; }
+    74%  { top: 96%; left: 2%;  opacity: 1; }
+    76%  { top: 96%; left: 2%;  opacity: 0.7; }
+    100% { top: 4%;  left: 2%;  opacity: 1; }
+  }
+
+  .visual-col {
+    width: 50%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .portal-frame {
+    position: relative;
+    width: min(42vw, 550px);
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 1px solid var(--gold-dim);
+    box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 30px var(--gold-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: portalBreathe 5.5s ease-in-out infinite;
+  }
+
+  @keyframes portalBreathe {
+    0%, 100% {
+      box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 30px var(--gold-dim);
+      border-color: var(--gold-dim);
+    }
+    50% {
+      box-shadow: 0 0 75px rgba(0,0,0,0.8), inset 0 0 45px rgba(201, 152, 47, 0.35), 0 0 30px rgba(201, 152, 47, 0.2);
+      border-color: rgba(201, 152, 47, 0.45);
+    }
+  }
+
+  /* Anillos orbitales alrededor del portal, como órbitas de un sistema estelar */
+  .orbital-ring {
+    position: absolute;
+    inset: -22px;
+    border: 1px dashed var(--gold-dim);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: orbitalSpin 45s linear infinite;
+  }
+  .orbital-ring-outer {
+    position: absolute;
+    inset: -44px;
+    border: 1px dashed rgba(201, 152, 47, 0.15);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: orbitalSpin 70s linear infinite reverse;
+  }
+
+  @keyframes orbitalSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .portal-image-container {
+    position: absolute;
+    inset: 15px; 
+    border-radius: 50%;
+    overflow: hidden;
+    background: #000;
+    mask-image: radial-gradient(white, black);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+
+  .portal-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.1);
+    filter: brightness(0.75) contrast(1.1);
+    transition: opacity 0.8s ease, transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .portal-img.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #fff;
+    box-shadow: 0 0 20px currentColor;
+    animation: floatOrb 5s ease-in-out infinite alternate;
+  }
+  .orb-1 { width: 45px; height: 45px; top: 10%; right: -20px; background: #8b5cf6; color: #8b5cf6; }
+  .orb-2 { width: 35px; height: 35px; bottom: 20%; left: -25px; background: #3b82f6; color: #3b82f6; animation-delay: -2s;}
+  .orb-3 { width: 30px; height: 30px; bottom: -5px; right: 20%; background: var(--gold); color: var(--gold); animation-delay: -4s;}
+
+  @keyframes floatOrb {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-15px); }
+  }
+
+  /* =========================================
+     SECCIÓN AGENDAR SESIÓN (WHATSAPP)
+     ========================================= */
+  .agenda-section {
+    position: relative;
+    z-index: 15;
+    scroll-margin-top: 90px;
+    padding: 110px 6vw;
+    text-align: center;
+    background: rgba(255, 250, 240, 0.5);
+    border-top: 1px solid rgba(201, 152, 47, 0.2);
+    border-bottom: 1px solid rgba(201, 152, 47, 0.2);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 550px;
+  }
+
+  .agenda-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px dashed var(--gold-dim);
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    color: var(--gold);
+    animation: orbitalSpin 30s linear infinite;
+  }
+  .agenda-badge span { display: inline-block; animation: orbitalSpin 30s linear infinite reverse; }
+
+  .agenda-section h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 4.5vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+  }
+
+  .agenda-sub {
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 0.75rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .agenda-selected {
+    color: var(--gold);
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    min-height: 1.4em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .agenda-selected.visible { opacity: 1; }
+
+  .whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    padding: 1.1rem 2.8rem;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+  }
+  .whatsapp-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .agenda-note {
+    margin-top: 1.5rem;
+    color: rgba(92, 109, 126, 0.8);
+    font-size: 0.85rem;
+  }
+
+  /* =========================================
+     CALCULADORA DE CARTA NATAL
+     ========================================= */
+  .natal-section {
+    position: relative;
+    z-index: 15;
+    padding: 100px 6vw;
+    text-align: center;
+    background: rgba(255, 250, 240, 0.4);
+    border-bottom: 1px solid rgba(201, 152, 47, 0.2);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 750px;
+  }
+
+  .natal-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.1rem;
+    max-width: 640px;
+    margin: 2.2rem auto 0;
+  }
+
+  .natal-field {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 0.4rem;
+    flex: 1 1 180px;
+  }
+  .natal-field-wide { flex: 1 1 100%; }
+
+  .natal-field label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .natal-field input {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--gold-dim);
+    background: rgba(255, 253, 248, 0.9);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .natal-field input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201, 152, 47, 0.15);
+  }
+
+  .natal-submit {
+    flex: 1 1 100%;
+    margin: 0.6rem auto 0;
+    border: none;
+  }
+
+  .natal-hint {
+    max-width: 480px;
+    margin: 1.2rem auto 0;
+    font-size: 0.85rem;
+    color: rgba(92, 109, 126, 0.8);
+    font-style: italic;
+  }
+
+  .natal-status {
+    min-height: 1.4em;
+    margin-top: 1rem;
+    color: var(--teal);
+    font-size: 0.9rem;
+  }
+  .natal-status.error { color: #b5533c; }
+
+  .natal-result {
+    display: none;
+    max-width: 900px;
+    margin: 2.5rem auto 0;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .natal-result.visible { display: flex; }
+
+  .natal-wheel-wrap {
+    width: min(90vw, 420px);
+    aspect-ratio: 1/1;
+    flex-shrink: 0;
+  }
+  .natal-wheel-wrap svg { width: 100%; height: 100%; }
+
+  .natal-legend {
+    flex: 1 1 260px;
+    text-align: left;
+    max-width: 340px;
+  }
+  .natal-legend-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(28, 49, 68, 0.08);
+    font-size: 0.95rem;
+  }
+  .natal-legend-item:last-child { border-bottom: none; }
+  .natal-legend-planet {
+    color: var(--ink);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .natal-legend-planet .glyph {
+    color: var(--gold);
+    font-size: 1.1rem;
+    width: 1.2em;
+    text-align: center;
+  }
+  .natal-legend-detail {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+  .natal-legend-heading {
+    font-family: var(--font-heading);
+    font-style: italic;
+    color: var(--teal);
+    margin-bottom: 0.6rem;
+    font-size: 1.1rem;
+  }
+
+  /* =========================================
+     FOOTER CÓSMICO ELEGANTE Y LIVIANO
+     ========================================= */
+  .site-footer {
+    position: relative;
+    z-index: 15;
+    background: rgba(250, 243, 232, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(201, 152, 47, 0.2);
+    padding: 60px 5vw 40px;
+    color: var(--text-muted);
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .footer-col h3 {
+    font-family: var(--font-heading);
+    color: var(--text-main);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-col p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .footer-links {
+    list-style: none;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-links a:hover {
+    color: var(--gold);
+  }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 25px;
+    border-top: 1px solid rgba(28, 49, 68, 0.08);
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(92, 109, 126, 0.75);
+  }
+
+  @media (max-width: 960px) {
+    .scroll-container { flex-direction: column; padding: 0; }
+
+    /* La columna de imagen "sticky" se reemplaza por una foto fija
+       dentro de cada bloque, así nunca queda flotando sobre el texto */
+    .visual-col { display: none; }
+
+    .text-col { width: 100%; padding: 2vh 8vw 8vh; z-index: 2; position: relative; }
+
+    .therapy-item {
+      min-height: 0;
+      opacity: 1;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid rgba(28, 49, 68, 0.08);
+      align-items: center;
+      text-align: center;
+    }
+    .therapy-item:last-child { border-bottom: none; }
+
+    .therapy-item h2 { font-size: clamp(2.1rem, 8vw, 2.6rem); margin-bottom: 1rem; }
+    .therapy-item p { max-width: 100%; font-size: 1rem; }
+    .therapy-benefits { max-width: 100%; text-align: left; }
+    .btn { margin: 0 auto; }
+
+    .item-photo {
+      display: block;
+      width: min(60vw, 260px);
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      border: 1px solid var(--gold-dim);
+      box-shadow: 0 10px 35px rgba(28, 49, 68, 0.2), 0 0 20px var(--gold-dim);
+      filter: brightness(0.95) contrast(1.05);
+    }
+
+    .music-player { bottom: 15px; right: 15px; padding: 8px 14px; }
+    .music-info { max-width: 130px; }
+    .site-footer { padding: 40px 6vw 30px; text-align: center; }
+    .footer-col { display: flex; flex-direction: column; align-items: center; }
+    .hero-block { padding-top: 12vh; text-align: center; min-height: 55vh; }
+    .hero-block .item-photo { display: block; }
+
+    .natal-section { padding: 70px 6vw; }
+    .natal-result { flex-direction: column; align-items: center; gap: 2rem; }
+    .natal-legend { max-width: 100%; }
+  }
+
+  /* =========================================
+     OPTIMIZACIÓN PARA MÓVILES DE GAMA BAJA
+     Se recortan las animaciones decorativas más numerosas y menos
+     notorias (muchos elementos chiquitos animando a la vez es lo que más
+     castiga a un GPU de gama baja). Se conservan las animaciones "de
+     marca" del sitio: el shimmer del logo, el zodiaco flotante, los
+     anillos/orbes del portal y su "respiración", y el giro de las
+     insignias — son pocas, grandes y le dan identidad visual al sitio.
+     ========================================= */
+  @media (max-width: 960px) {
+    .twinkle-star {
+      animation: none;
+      opacity: 0.3;
+    }
+    .shooting-star {
+      display: none;
+    }
+    .constellation-svg .const-a line,
+    .constellation-svg .const-b line {
+      animation: none;
+      opacity: 0.25;
+    }
+    .cross-flare {
+      animation: none;
+      opacity: 0.5;
+      filter: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .twinkle-star,
+    .shooting-star,
+    .cross-flare,
+    .zodiac-bg,
+    .stars-layer-1,
+    .stars-layer-2,
+    .orbital-ring,
+    .orbital-ring-outer,
+    .orb,
+    .portal-frame,
+    .brand-title,
+    .constellation-svg .const-a line,
+    .constellation-svg .const-b line {
+      animation: none !important;
+    }
+    * {
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .music-info { display: none; }
+    .music-player { gap: 0; padding: 10px; }
+  }
+
+/* Estilo para el botón del Header en el index */
+    .nav-sobre-mi-btn {
+      position: absolute;
+      right: 25px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--text-main);
+      padding: 6px 16px;
+      border-radius: 50px;
+      border: 1px solid var(--gold-dim);
+      background: rgba(255, 250, 240, 0.6);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+    .nav-sobre-mi-btn:hover {
+      color: var(--gold);
+      border-color: var(--gold);
+      transform: translateY(-1px);
+      box-shadow: 0 0 10px rgba(201, 152, 47, 0.2);
+    }
+  </style>
+</style>
+</head>
+<body>
+
+  <!-- HEADER FIJO CON EL NOMBRE DEL EMPRENDIMIENTO -->
+ <header class="site-header">
+    <h1 class="brand-title" id="brand-home-link">Alquimia Sagrada</h1>
+    <a href="sobre-mi.html" class="nav-sobre-mi-btn">Perfil profesional</a>
+  </header>
+
+  <div class="cosmic-bg" id="main-bg"></div>
+
+  <div class="parallax-layer" id="parallax-1"><div class="stars-layer-1"></div></div>
+  <div class="parallax-layer" id="parallax-2"><div class="stars-layer-2"></div></div>
+
+  <!-- Líneas de constelación (SVG liviano) -->
+  <svg class="constellation-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+    <g class="const-a">
+      <line x1="120" y1="180" x2="240" y2="120" />
+      <line x1="240" y1="120" x2="360" y2="210" />
+      <line x1="360" y1="210" x2="330" y2="330" />
+      <circle cx="120" cy="180" r="2.2" />
+      <circle cx="240" cy="120" r="2.2" />
+      <circle cx="360" cy="210" r="2.2" />
+      <circle cx="330" cy="330" r="2.2" />
+    </g>
+    <g class="const-b">
+      <line x1="760" y1="700" x2="860" y2="640" />
+      <line x1="860" y1="640" x2="920" y2="760" />
+      <line x1="760" y1="700" x2="700" y2="820" />
+      <circle cx="760" cy="700" r="2.2" />
+      <circle cx="860" cy="640" r="2.2" />
+      <circle cx="920" cy="760" r="2.2" />
+      <circle cx="700" cy="820" r="2.2" />
+    </g>
+    <g class="const-a">
+      <line x1="820" y1="140" x2="900" y2="220" />
+      <line x1="900" y1="220" x2="860" y2="320" />
+      <circle cx="820" cy="140" r="2" />
+      <circle cx="900" cy="220" r="2" />
+      <circle cx="860" cy="320" r="2" />
+    </g>
+    <g class="const-b">
+      <line x1="90" y1="750" x2="180" y2="800" />
+      <line x1="180" y1="800" x2="150" y2="900" />
+      <circle cx="90" cy="750" r="2" />
+      <circle cx="180" cy="800" r="2" />
+      <circle cx="150" cy="900" r="2" />
+    </g>
+  </svg>
+
+  <!-- Estrellas con parpadeo (twinkle) aleatorio -->
+  <div class="twinkle-star tw-1"></div>
+  <div class="twinkle-star tw-2 gold"></div>
+  <div class="twinkle-star tw-3"></div>
+  <div class="twinkle-star tw-4 gold"></div>
+  <div class="twinkle-star tw-5"></div>
+  <div class="twinkle-star tw-6 gold"></div>
+  <div class="twinkle-star tw-7"></div>
+  <div class="twinkle-star tw-8"></div>
+
+  <div class="shooting-star ss-1"></div>
+  <div class="shooting-star ss-2"></div>
+  <div class="shooting-star ss-3"></div>
+
+  <div class="zodiac-bg z-1">♈</div>
+  <div class="zodiac-bg z-2">♓</div>
+  <div class="zodiac-bg z-3">♋</div>
+  <div class="zodiac-bg z-4">♒</div>
+
+  <div class="cross-flare cf-1"></div>
+  <div class="cross-flare cf-2"></div>
+  <div class="cross-flare cf-3"></div>
+  <div class="cross-flare cf-4"></div>
+  <div class="cross-flare cf-5"></div>
+
+  <div class="grain-overlay"></div>
+
+  <!-- SECCIÓN INTRODUCTORIA TYPEWRITER -->
+  <!-- REPRODUCTOR FLOTANTE (AUDIO NATIVO HTML5) -->
+  <div class="music-player" id="musicPlayerContainer">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">
+      <span class="play-icon" id="playIcon">▶</span>
+    </button>
+    <div class="music-info">
+      <span class="music-title">Frecuencia Cósmica 432Hz</span>
+      <span class="music-subtitle">Música de Meditación</span>
+    </div>
+    <div class="eq-bars" id="eqBars">
+      <div class="eq-bar dynamic-eq"></div>
+      <div class="eq-bar dynamic-eq"></div>
+      <div class="eq-bar dynamic-eq"></div>
+    </div>
+  </div>
+
+  <!-- Elemento de audio HTML5 directo -->
+  <audio id="bg-audio" loop preload="auto">
+    <source src="meditacion.mp3" type="audio/mpeg">
+  </audio>
+
+  <main class="scroll-container">
+    
+    <div class="text-col">
+
+      <div class="hero-block">
+        <img class="item-photo" src="assets/img/logo-alquimia.jpg" alt="Alquimia Sagrada" loading="lazy" decoding="async">
+        <div class="typewriter-container">
+          <span id="typewriter-text"></span><span class="cursor-blink"></span>
+        </div>
+        <p class="brand-tagline">El amor ordena, el alma florece.</p>
+      </div>
+
+      <div class="therapy-item" data-index="0" data-color="#4ade80" data-accent="#4ade80">
+        <img class="item-photo" src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=80&w=800" alt="Constelaciones Familiares" loading="lazy" decoding="async">
+        <h2>Constelaciones Familiares</h2>
+        <p>Un método sistémico que revela los vínculos invisibles entre generaciones. Como estrellas de un mismo cúmulo, cada miembro de la familia ocupa un lugar y una fuerza que, al ordenarse, libera al sistema entero.</p>
+        <ul class="therapy-benefits">
+          <li>Libera lealtades familiares inconscientes</li>
+          <li>Restaura el orden y la pertenencia</li>
+          <li>Sana patrones heredados repetitivos</li>
+        </ul>
+        <a href="#agendar" class="btn">Agendar Sesión</a>
+      </div>
+
+      <div class="therapy-item" data-index="1" data-color="#facc15" data-accent="#facc15">
+        <img class="item-photo" src="https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&q=80&w=800" alt="Reiki" loading="lazy" decoding="async">
+        <h2>Reiki</h2>
+        <p>Canalización de energía universal a través de las manos para equilibrar el cuerpo, la mente y el espíritu. Una corriente sutil que disuelve bloqueos y devuelve la vitalidad a cada capa del ser.</p>
+        <ul class="therapy-benefits">
+          <li>Reduce el estrés y la ansiedad</li>
+          <li>Equilibra los centros energéticos</li>
+          <li>Favorece la relajación profunda</li>
+        </ul>
+        <a href="#agendar" class="btn">Agendar Sesión</a>
+      </div>
+
+      <div class="therapy-item" data-index="2" data-color="#38bdf8" data-accent="#38bdf8">
+        <img class="item-photo" src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&q=80&w=800" alt="Barras de Access" loading="lazy" decoding="async">
+        <h2>Barras de Access</h2>
+        <p>Treinta y dos puntos sobre la cabeza que, al ser tocados suavemente, disuelven creencias limitantes acumuladas durante toda una vida. Una técnica precisa como un mapa estelar, dirigida al cambio real.</p>
+        <ul class="therapy-benefits">
+          <li>Libera creencias y patrones mentales</li>
+          <li>Amplía la claridad y la posibilidad</li>
+          <li>Efecto notable desde la primera sesión</li>
+        </ul>
+        <a href="#agendar" class="btn">Agendar Sesión</a>
+      </div>
+
+      <div class="therapy-item" data-index="3" data-color="#e879f9" data-accent="#e879f9">
+        <img class="item-photo" src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=800" alt="Registros Akáshicos" loading="lazy" decoding="async">
+        <h2>Registros Akáshicos</h2>
+        <p>El archivo etérico donde queda inscrita cada experiencia del alma a través del tiempo. Consultarlo es abrir un libro cuyas páginas se despliegan en constelaciones de respuestas y propósito.</p>
+        <ul class="therapy-benefits">
+          <li>Claridad sobre el propósito de vida</li>
+          <li>Comprensión de patrones kármicos</li>
+          <li>Guía para decisiones importantes</li>
+        </ul>
+        <a href="#agendar" class="btn">Agendar Sesión</a>
+      </div>
+
+      <div class="therapy-item" data-index="4" data-color="#fb7185" data-accent="#fb7185">
+        <img class="item-photo" src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=800" alt="Masajes Holísticos" loading="lazy" decoding="async">
+        <h2>Masajes Holísticos</h2>
+        <p>Manos que leen el cuerpo como un territorio propio, liberando tensión acumulada capa tras capa. Un trabajo que integra técnica y presencia para devolver al cuerpo su estado natural de calma.</p>
+        <ul class="therapy-benefits">
+          <li>Alivia tensión muscular profunda</li>
+          <li>Mejora la circulación y el descanso</li>
+          <li>Reconecta cuerpo y mente</li>
+        </ul>
+        <a href="#agendar" class="btn">Agendar Sesión</a>
+      </div>
+
+      <div class="therapy-item" data-index="5" data-color="#818cf8" data-accent="#818cf8">
+        <img class="item-photo" src="https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?auto=format&fit=crop&q=80&w=800" alt="Reflexología" loading="lazy" decoding="async">
+        <h2>Reflexología</h2>
+        <p>Cada punto de la planta del pie es una puerta hacia un órgano o sistema del cuerpo. Presionar con precisión estos puntos es activar un mapa completo de bienestar, trazado como una constelación.</p>
+        <ul class="therapy-benefits">
+          <li>Estimula el equilibrio de órganos internos</li>
+          <li>Mejora la circulación en extremidades</li>
+          <li>Induce un descanso profundo</li>
+        </ul>
+        <a href="#agendar" class="btn">Agendar Sesión</a>
+      </div>
+
+      <div class="therapy-item" data-index="6" data-color="#34d399" data-accent="#34d399">
+        <img class="item-photo" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800" alt="Senderismo Holístico" loading="lazy" decoding="async">
+        <h2>Senderismo Holístico</h2>
+        <p>Caminatas conscientes en la naturaleza que combinan respiración, silencio y movimiento. Un sendero físico que, paso a paso, se convierte también en un camino interior bajo un cielo abierto.</p>
+        <ul class="therapy-benefits">
+          <li>Reduce el ruido mental y el estrés</li>
+          <li>Fortalece cuerpo y sistema respiratorio</li>
+          <li>Reconecta con los ciclos naturales</li>
+        </ul>
+        <a href="#agendar" class="btn">Agendar Sesión</a>
+      </div>
+
+    </div>
+
+    <div class="visual-col">
+      <div class="portal-frame">
+        <div class="orbital-ring"></div>
+        <div class="orbital-ring-outer"></div>
+        <div class="orb orb-1">♄</div>
+        <div class="orb orb-2">☾</div>
+        <div class="orb orb-3"></div>
+
+        <div class="portal-image-container">
+          <img src="assets/img/logo-alquimia.jpg" alt="Alquimia Sagrada" class="portal-img active" id="img-logo" fetchpriority="high" decoding="async">
+          <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=80&w=800" alt="Constelaciones Familiares" class="portal-img" id="img-0" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&q=80&w=800" alt="Reiki" class="portal-img" id="img-1" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&q=80&w=800" alt="Barras de Access" class="portal-img" id="img-2" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=800" alt="Registros Akáshicos" class="portal-img" id="img-3" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=800" alt="Masajes Holísticos" class="portal-img" id="img-4" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?auto=format&fit=crop&q=80&w=800" alt="Reflexología" class="portal-img" id="img-5" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800" alt="Senderismo Holístico" class="portal-img" id="img-6" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- CALCULADORA DE CARTA NATAL -->
+  <section id="carta-natal" class="natal-section">
+    <div class="agenda-badge"><span>✦</span></div>
+    <h2>Tu Carta Natal</h2>
+    <p class="agenda-sub">Ingresá tu fecha, hora y lugar de nacimiento para ver el mapa del cielo en el momento en que naciste: tus planetas, tus signos y tus casas.</p>
+
+    <form class="natal-form" id="natal-form">
+      <div class="natal-field">
+        <label for="natal-date">Fecha de nacimiento</label>
+        <input type="date" id="natal-date" required>
+      </div>
+      <div class="natal-field">
+        <label for="natal-time">Hora de nacimiento</label>
+        <input type="time" id="natal-time" required>
+      </div>
+      <div class="natal-field natal-field-wide">
+        <label for="natal-place">Ciudad de nacimiento</label>
+        <input type="text" id="natal-place" placeholder="Ej: Villa María, Argentina" required>
+      </div>
+      <button type="submit" class="btn natal-submit" id="natal-submit">Calcular mi Carta Natal</button>
+    </form>
+
+    <p class="natal-hint">¿No sabés la hora exacta? Usá 12:00 como aproximación — el Ascendente y las casas pueden variar, pero los planetas se mantienen certeros.</p>
+
+    <p class="natal-status" id="natal-status"></p>
+
+    <div class="natal-result" id="natal-result">
+      <div class="natal-wheel-wrap" id="natal-wheel-wrap"></div>
+      <div class="natal-legend" id="natal-legend"></div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN AGENDAR SESIÓN (WHATSAPP) -->
+  <section id="agendar" class="agenda-section">
+    <div class="agenda-badge"><span>✦</span></div>
+    <h2>Agendá tu Sesión</h2>
+    <p class="agenda-sub">Escribime directamente por WhatsApp y coordinamos juntxs el día y horario que mejor te quede.</p>
+    <p class="agenda-selected" id="agenda-selected"></p>
+    <a href="https://wa.me/5493535654858" target="_blank" rel="noopener" class="btn whatsapp-btn" id="whatsapp-cta">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.24 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.4c0-4.54 3.7-8.22 8.25-8.22zm-4.53 4.71c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.03 0 1.2.87 2.35.99 2.51.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.34-.76-1.83-.2-.48-.4-.42-.55-.42h-.14z"/>
+      </svg>
+      <span id="whatsapp-cta-label">¡Quiero agendar una sesión!</span>
+    </a>
+    <p class="agenda-note">Te responderé a la brevedad para confirmar tu sesión.</p>
+  </section>
+
+
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3>Alquimia Sagrada</h3>
+        <p>Espacio de sanación y evolución consciente. Un puente entre la energía sutil y tu bienestar integral bajo la guía del universo.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Contacto</h3>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/5493535654858" target="_blank">📞 3535654858</a></li>
+          <li><a href="mailto:iva201333@gmail.com">✉️ iva201333@gmail.com</a></li>
+          <li><a href="#">📍 Villa María, Cba.</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Redes</h3>
+        <ul class="footer-links">
+          <li><a href="https://instagram.com/alquimia.sagrada.vm" target="_blank">✨ Instagram: @alquimia.sagrada.vm</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Alquimia Sagrada &middot; Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Bloqueo del clic derecho, del arrastre de imágenes y de los atajos de
+    // teclado más comunes para abrir las herramientas de desarrollador.
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('dragstart', (e) => e.preventDefault());
+    document.addEventListener('selectstart', (e) => {
+      const tag = e.target.tagName;
+      if (tag !== 'INPUT' && tag !== 'TEXTAREA') e.preventDefault();
+    });
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+      const blocked =
+        key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(key)) ||
+        (e.metaKey && e.altKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(key)) ||
+        (e.ctrlKey && ['U', 'u'].includes(key)) ||
+        (e.metaKey && ['U', 'u'].includes(key));
+      if (blocked) e.preventDefault();
+    });
+  </script>
+
+  <!-- GSAP & ScrollTrigger (cargados acá, al final, para no bloquear el
+       primer renderizado de la página con conexiones lentas en mobile) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- Calculadora de Carta Natal: astronomía, zona horaria histórica y fechas.
+       Las librerías (pesadas) se cargan bajo demanda más abajo, recién
+       cuando la sección #carta-natal entra en pantalla — no todas las
+       visitas llegan a usarla. -->
+
+  <script>
+  // =========================================
+  // CARGA DIFERIDA DE LAS LIBRERÍAS DE CARTA NATAL
+  // Son 3 librerías pesadas que la mayoría de las visitas nunca llega a
+  // necesitar. Se piden recién cuando la sección entra en pantalla (con
+  // margen de anticipación, para que ya estén listas cuando el usuario
+  // termine de completar el formulario), o como red de seguridad justo
+  // antes de calcular la carta si por algún motivo todavía no cargaron.
+  (function () {
+    let natalLibsPromise = null;
+
+    window.loadNatalLibraries = function () {
+      if (natalLibsPromise) return natalLibsPromise;
+      const urls = [
+        'https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js',
+        'https://cdn.jsdelivr.net/npm/tz-lookup@6.1.25/tz.js',
+        'https://cdn.jsdelivr.net/npm/luxon@3.7.2/build/global/luxon.min.js'
+      ];
+      natalLibsPromise = Promise.all(urls.map(src => new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error('No se pudo cargar ' + src));
+        document.body.appendChild(s);
+      })));
+      return natalLibsPromise;
+    };
+
+    const natalSection = document.getElementById('carta-natal');
+    if (natalSection && 'IntersectionObserver' in window) {
+      const natalObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            window.loadNatalLibraries();
+            natalObserver.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '600px 0px' });
+      natalObserver.observe(natalSection);
+    } else if (natalSection) {
+      // Navegadores sin soporte de IntersectionObserver: cargamos directo.
+      window.loadNatalLibraries();
+    }
+  })();
+  </script>
+
+  <script>
+    const audio = document.getElementById('bg-audio');
+    audio.volume = 0.5;
+    let isPlaying = false;
+
+    // Al tocar el nombre de marca en el header, volver al hero (arriba del todo)
+    const brandHomeLink = document.getElementById('brand-home-link');
+    if (brandHomeLink) {
+      brandHomeLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    function togglePlay() {
+      const playIcon = document.getElementById('playIcon');
+      const playerContainer = document.getElementById('musicPlayerContainer');
+
+      if (isPlaying) {
+        audio.pause();
+        playIcon.textContent = '▶';
+        playerContainer.classList.remove('playing');
+        isPlaying = false;
+      } else {
+        audio.play().then(() => {
+          playIcon.textContent = '❚❚';
+          playerContainer.classList.add('playing');
+          isPlaying = true;
+        }).catch(error => {
+          console.log("El navegador bloqueó la reproducción automática:", error);
+        });
+      }
+    }
+
+    // Efecto Typewriter (Escribir texto fluido)
+    const textToType = "Terapias Holísticas\nTerapeuta, facilitadora\nIvana I. Lamberti";
+    const typewriterElement = document.getElementById('typewriter-text');
+    let charIndex = 0;
+
+    function typeWriter() {
+      if (charIndex < textToType.length) {
+        const char = textToType.charAt(charIndex);
+        if (char === '\n') {
+          typewriterElement.innerHTML += '<br>';
+        } else {
+          typewriterElement.innerHTML += char;
+        }
+        charIndex++;
+        setTimeout(typeWriter, 45); // Velocidad de tipeo
+      }
+    }
+
+    // Iniciar el efecto máquina de escribir al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(typeWriter, 600);
+    });
+
+    // Parallax suave de las capas de estrellas según el scroll
+    const parallax1 = document.getElementById('parallax-1');
+    const parallax2 = document.getElementById('parallax-2');
+    let parallaxTicking = false;
+
+    function updateParallax() {
+      const y = window.scrollY;
+      parallax1.style.transform = `translateY(${y * 0.05}px)`;
+      parallax2.style.transform = `translateY(${y * 0.1}px)`;
+      parallaxTicking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!parallaxTicking) {
+        requestAnimationFrame(updateParallax);
+        parallaxTicking = true;
+      }
+    }, { passive: true });
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const items = document.querySelectorAll('.therapy-item');
+    const images = document.querySelectorAll('.portal-img');
+    const bgMain = document.getElementById('main-bg');
+    const playerContainer = document.getElementById('musicPlayerContainer');
+    const playBtn = document.getElementById('playBtn');
+    const eqBars = document.querySelectorAll('.dynamic-eq');
+
+    items.forEach((item, index) => {
+      ScrollTrigger.create({
+        trigger: item,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => activateSection(index, item),
+        onEnterBack: () => activateSection(index, item)
+      });
+    });
+
+    // El bloque hero muestra el logo en el portal mientras está en pantalla,
+    // antes de que el scroll llegue a la primera terapia
+    const heroBlock = document.querySelector('.hero-block');
+    if (heroBlock) {
+      ScrollTrigger.create({
+        trigger: heroBlock,
+        start: "top center",
+        end: "bottom center",
+        onEnter: activateHero,
+        onEnterBack: activateHero
+      });
+    }
+
+    function activateHero() {
+      items.forEach(el => el.classList.remove('active'));
+
+      images.forEach(img => img.classList.remove('active'));
+      const logoImg = document.getElementById('img-logo');
+      if (logoImg) logoImg.classList.add('active');
+
+      bgMain.style.background = `radial-gradient(circle at 12% 30%, rgba(76, 155, 163, 0.28) 0%, transparent 45%), radial-gradient(circle at 88% 28%, rgba(224, 178, 90, 0.28) 0%, transparent 50%), var(--bg-base)`;
+
+      playerContainer.style.borderColor = 'var(--gold-dim)';
+      playerContainer.style.boxShadow = '0 10px 30px rgba(28, 49, 68, 0.12), 0 0 20px rgba(201, 152, 47, 0.15)';
+      playBtn.style.background = 'var(--gold)';
+      playBtn.style.boxShadow = '0 0 15px rgba(201, 152, 47, 0.4)';
+      eqBars.forEach(bar => bar.style.background = 'var(--gold)');
+    }
+
+    // Fade-up: revela título, texto, beneficios y botón al entrar en pantalla
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+
+    items.forEach(item => revealObserver.observe(item));
+
+    function activateSection(index, currentItem) {
+      items.forEach(el => el.classList.remove('active'));
+      currentItem.classList.add('active');
+
+      images.forEach(img => img.classList.remove('active'));
+      const targetImg = document.getElementById(`img-${index}`);
+      if(targetImg) targetImg.classList.add('active');
+
+      // Cambiar fondo cósmico: mantiene el velo de acuarela teal/dorado de marca
+      // y suma un matiz sutil del color de la terapia activa
+      const newColor = currentItem.getAttribute('data-color');
+      bgMain.style.background = `radial-gradient(circle at 60% 35%, ${newColor}30 0%, transparent 50%), radial-gradient(circle at 12% 30%, rgba(76, 155, 163, 0.28) 0%, transparent 45%), radial-gradient(circle at 88% 28%, rgba(224, 178, 90, 0.28) 0%, transparent 50%), var(--bg-base)`;
+
+      // Cambiar colores dinámicos del reproductor según la sección
+      const accentContextColor = currentItem.getAttribute('data-accent');
+      playerContainer.style.borderColor = accentContextColor + '40';
+      playerContainer.style.boxShadow = `0 10px 30px rgba(28, 49, 68, 0.12), 0 0 20px ${accentContextColor}20`;
+      playBtn.style.background = accentContextColor;
+      playBtn.style.boxShadow = `0 0 15px ${accentContextColor}66`;
+      eqBars.forEach(bar => bar.style.background = accentContextColor);
+    }
+
+    // Agendar Sesión: el botón siempre lleva directo a WhatsApp.
+    // Si la persona ya eligió una terapia puntual, el mensaje viene personalizado;
+    // si llega directo a esta sección, se envía un mensaje genérico.
+    const whatsappNumber = '5493535654858';
+    const whatsappCta = document.getElementById('whatsapp-cta');
+    const whatsappCtaLabel = document.getElementById('whatsapp-cta-label');
+    const agendaSelected = document.getElementById('agenda-selected');
+
+    function setWhatsappMessage(therapyName) {
+      const message = therapyName
+        ? `Hola! Quiero agendar una sesión de ${therapyName}.`
+        : 'Hola! Quiero agendar una sesión.';
+      whatsappCta.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    }
+
+    setWhatsappMessage(null);
+
+    document.querySelectorAll('.therapy-item .btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const therapyItem = btn.closest('.therapy-item');
+        const therapyName = therapyItem.querySelector('h2').textContent.trim();
+        setWhatsappMessage(therapyName);
+        whatsappCtaLabel.textContent = 'Escribinos por WhatsApp';
+        agendaSelected.textContent = `Terapia seleccionada: ${therapyName}`;
+        agendaSelected.classList.add('visible');
+      });
+    });
+  </script>
+
+  <script>
+  // =========================================
+  // CALCULADORA DE CARTA NATAL
+  // =========================================
+  (function () {
+    const ZODIAC_SIGNS = [
+      { name: 'Aries', glyph: '♈', slug: 'aries' }, { name: 'Tauro', glyph: '♉', slug: 'tauro' }, { name: 'Géminis', glyph: '♊', slug: 'geminis' },
+      { name: 'Cáncer', glyph: '♋', slug: 'cancer' }, { name: 'Leo', glyph: '♌', slug: 'leo' }, { name: 'Virgo', glyph: '♍', slug: 'virgo' },
+      { name: 'Libra', glyph: '♎', slug: 'libra' }, { name: 'Escorpio', glyph: '♏', slug: 'escorpio' }, { name: 'Sagitario', glyph: '♐', slug: 'sagitario' },
+      { name: 'Capricornio', glyph: '♑', slug: 'capricornio' }, { name: 'Acuario', glyph: '♒', slug: 'acuario' }, { name: 'Piscis', glyph: '♓', slug: 'piscis' }
+    ];
+
+    const PLANETS = [
+      { key: 'Sun', label: 'Sol', glyph: '☉' },
+      { key: 'Moon', label: 'Luna', glyph: '☾' },
+      { key: 'Mercury', label: 'Mercurio', glyph: '☿' },
+      { key: 'Venus', label: 'Venus', glyph: '♀' },
+      { key: 'Mars', label: 'Marte', glyph: '♂' },
+      { key: 'Jupiter', label: 'Júpiter', glyph: '♃' },
+      { key: 'Saturn', label: 'Saturno', glyph: '♄' },
+      { key: 'Uranus', label: 'Urano', glyph: '♅' },
+      { key: 'Neptune', label: 'Neptuno', glyph: '♆' },
+      { key: 'Pluto', label: 'Plutón', glyph: '♇' }
+    ];
+
+    function toRad(d) { return d * Math.PI / 180; }
+    function norm360(d) { return ((d % 360) + 360) % 360; }
+    function toDegNorm(r) { return norm360(r * 180 / Math.PI); }
+
+    function signOf(lonDeg) {
+      const n = norm360(lonDeg);
+      const idx = Math.floor(n / 30);
+      return { sign: ZODIAC_SIGNS[idx], deg: n % 30 };
+    }
+
+    function calcMC(ramcDeg, oblDeg) {
+      const ramc = toRad(ramcDeg), obl = toRad(oblDeg);
+      return toDegNorm(Math.atan2(Math.sin(ramc), Math.cos(ramc) * Math.cos(obl)));
+    }
+    function calcAsc(ramcDeg, oblDeg, latDeg) {
+      const ramc = toRad(ramcDeg), obl = toRad(oblDeg), lat = toRad(latDeg);
+      return toDegNorm(Math.atan2(Math.cos(ramc), -(Math.sin(ramc) * Math.cos(obl) + Math.tan(lat) * Math.sin(obl))));
+    }
+
+    async function geocode(place) {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=8&q=${encodeURIComponent(place)}`;
+      const res = await fetch(url, { headers: { 'Accept-Language': 'es' } });
+      if (!res.ok) throw new Error('No se pudo geolocalizar el lugar.');
+      const data = await res.json();
+      if (!data || !data.length) throw new Error('No encontramos esa ciudad. Probá escribiendo "Ciudad, País".');
+
+      // Nominatim puede devolver calles, parques o monumentos junto con ciudades reales.
+      // Priorizamos resultados que sean lugares poblados (ciudad, pueblo, localidad, etc.)
+      // y descartamos calles/parques/edificios, aunque tengan un nombre parecido a lo buscado.
+      const PREFERRED_TYPES = ['city', 'town', 'village', 'municipality', 'hamlet', 'county', 'state', 'administrative'];
+      const EXCLUDED_CLASSES = ['highway', 'leisure', 'amenity', 'shop', 'tourism', 'building', 'historic'];
+
+      const ranked = [...data].sort((a, b) => {
+        const scoreOf = (r) => {
+          const type = r.addresstype || r.type || '';
+          const cls = r.class || '';
+          let score = parseFloat(r.importance) || 0;
+          if (PREFERRED_TYPES.includes(type)) score += 2;
+          if (EXCLUDED_CLASSES.includes(cls)) score -= 3;
+          return score;
+        };
+        return scoreOf(b) - scoreOf(a);
+      });
+
+      const best = ranked[0];
+      return { lat: parseFloat(best.lat), lon: parseFloat(best.lon), label: best.display_name };
+    }
+
+    function computeChart({ year, month, day, hour, minute, lat, lon }) {
+      const tzName = tzlookup(lat, lon);
+      const { DateTime } = luxon;
+      const localDT = DateTime.fromObject({ year, month, day, hour, minute }, { zone: tzName });
+      if (!localDT.isValid) throw new Error('Fecha u hora inválida.');
+      const utcDT = localDT.toUTC();
+
+      const Astronomy = window.Astronomy;
+      const time = Astronomy.MakeTime(utcDT.toJSDate());
+
+      const planets = PLANETS.map(p => {
+        const vec = Astronomy.GeoVector(Astronomy.Body[p.key], time, true);
+        const ecl = Astronomy.Ecliptic(vec);
+        return { ...p, lon: norm360(ecl.elon) };
+      });
+
+      // Hora sideral de Greenwich (horas) -> Hora sideral local en grados (RAMC)
+      const gstHours = Astronomy.SiderealTime(time);
+      const ramc = norm360(gstHours * 15 + lon);
+
+      // Oblicuidad de la eclíptica para la fecha (fórmula estándar de baja variación)
+      const T = (utcDT.toMillis() / 86400000 - 10957.5) / 36525;
+      const obliquity = 23.4392911 - 0.0130042 * T;
+
+      const asc = calcAsc(ramc, obliquity, lat);
+      const mc = calcMC(ramc, obliquity);
+
+      // Sistema de Casas Iguales: cada casa ocupa 30° a partir del Ascendente
+      const houseCusps = [];
+      for (let i = 0; i < 12; i++) houseCusps.push(norm360(asc + i * 30));
+
+      function houseOf(lonDeg) {
+        return Math.floor(norm360(lonDeg - asc) / 30) + 1;
+      }
+
+      return {
+        tzName,
+        planets: planets.map(p => ({ ...p, house: houseOf(p.lon) })),
+        asc, mc, houseCusps
+      };
+    }
+
+    function renderWheel(chart) {
+      const size = 400, cx = size / 2, cy = size / 2;
+      const rOuter = 190, rSignRing = 165, rHouseLine = 148, rPlanet = 115;
+
+      // El Ascendente se ubica a la izquierda (convención estándar) y el
+      // zodíaco avanza en sentido antihorario a medida que crece la longitud eclíptica
+      function point(lonDeg, radius) {
+        const angle = toRad(180 + (lonDeg - chart.asc));
+        return { x: cx + radius * Math.cos(angle), y: cy - radius * Math.sin(angle) };
+      }
+
+      let svg = `<svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">`;
+
+      // ---- IMAGEN DE FONDO: SIGNO SOLAR (sin imágenes todavía) ----
+      // El fondo de la rueda muestra la imagen del signo donde cae el Sol
+      // en la carta. Se escala siempre a partir de rOuter, así que se
+      // adapta automáticamente si en algún momento cambia el tamaño de la
+      // rueda. Cuando subas los archivos reales, colocalos en
+      // assets/zodiac/{slug}.png (aries, tauro, geminis, cancer, leo,
+      // virgo, libra, escorpio, sagitario, capricornio, acuario, piscis)
+      // — no hace falta tocar este código: si el archivo no existe
+      // todavía, la imagen simplemente no se muestra.
+      const sun = chart.planets.find(p => p.key === 'Sun');
+      const sunSign = signOf(sun.lon);
+
+      svg += `
+        <image
+          href="/assets/zodiac/${sunSign.sign.slug}.png"
+          x="${cx - rOuter}"
+          y="${cy - rOuter}"
+          width="${rOuter * 2}"
+          height="${rOuter * 2}"
+          preserveAspectRatio="xMidYMid meet"
+          opacity="0.22"
+          onerror="console.error('No se pudo cargar la imagen del signo solar:', '/assets/zodiac/${sunSign.sign.slug}.png')"
+        />
+      `;
+
+      svg += `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="var(--gold-dim)" stroke-width="1.5"/>`;
+      svg += `<circle cx="${cx}" cy="${cy}" r="${rSignRing}" fill="none" stroke="var(--gold-dim)" stroke-width="1"/>`;
+      svg += `<circle cx="${cx}" cy="${cy}" r="${rHouseLine}" fill="none" stroke="rgba(28,49,68,0.12)" stroke-width="1"/>`;
+
+      for (let i = 0; i < 12; i++) {
+        const lon = i * 30;
+        const p1 = point(lon, rOuter);
+        const p2 = point(lon, rHouseLine);
+        svg += `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="var(--gold-dim)" stroke-width="1"/>`;
+        const mid = point(lon + 15, rSignRing + 14);
+        svg += `<text x="${mid.x.toFixed(1)}" y="${mid.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="15" fill="var(--gold)">${ZODIAC_SIGNS[i].glyph}</text>`;
+      }
+
+      chart.houseCusps.forEach((cusp, i) => {
+        const p1 = point(cusp, rHouseLine);
+        const isAngular = (i === 0 || i === 3 || i === 6 || i === 9);
+        svg += `<line x1="${cx}" y1="${cy}" x2="${p1.x.toFixed(1)}" y2="${p1.y.toFixed(1)}" stroke="rgba(28,49,68,${isAngular ? 0.3 : 0.12})" stroke-width="${isAngular ? 1.4 : 0.7}"/>`;
+        const numPt = point(cusp + 15, rHouseLine - 16);
+        svg += `<text x="${numPt.x.toFixed(1)}" y="${numPt.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="9" fill="rgba(92,109,126,0.75)">${i + 1}</text>`;
+      });
+
+      const ascPt = point(chart.asc, rOuter + 14);
+      svg += `<text x="${ascPt.x.toFixed(1)}" y="${ascPt.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="var(--ink)">ASC</text>`;
+      const mcPt = point(chart.mc, rOuter + 14);
+      svg += `<text x="${mcPt.x.toFixed(1)}" y="${mcPt.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="var(--ink)">MC</text>`;
+
+      const sorted = [...chart.planets].sort((a, b) => a.lon - b.lon);
+      const placed = [];
+      sorted.forEach(p => {
+        let radius = rPlanet;
+        for (const other of placed) {
+          let diff = Math.abs(p.lon - other.lon);
+          if (diff > 180) diff = 360 - diff;
+          if (diff < 6) radius -= 16;
+        }
+        placed.push({ lon: p.lon, radius });
+        const pt = point(p.lon, radius);
+        svg += `<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="10" fill="var(--bg-base)" stroke="var(--teal)" stroke-width="1"/>`;
+        svg += `<text x="${pt.x.toFixed(1)}" y="${pt.y.toFixed(1)}" text-anchor="middle" dominant-baseline="central" font-size="12" fill="var(--teal)">${p.glyph}</text>`;
+      });
+
+      svg += `<circle cx="${cx}" cy="${cy}" r="3" fill="var(--gold)"/>`;
+      svg += `</svg>`;
+      return svg;
+    }
+
+    function renderLegend(chart) {
+      const rows = chart.planets.map(p => {
+        const { sign, deg } = signOf(p.lon);
+        return `<div class="natal-legend-item">
+          <span class="natal-legend-planet"><span class="glyph">${p.glyph}</span> ${p.label}</span>
+          <span class="natal-legend-detail">${deg.toFixed(1)}° ${sign.glyph} ${sign.name} · Casa ${p.house}</span>
+        </div>`;
+      }).join('');
+      const ascSign = signOf(chart.asc);
+      const mcSign = signOf(chart.mc);
+      return `<p class="natal-legend-heading">Puntos angulares</p>
+        <div class="natal-legend-item">
+          <span class="natal-legend-planet"><span class="glyph">↑</span> Ascendente</span>
+          <span class="natal-legend-detail">${ascSign.deg.toFixed(1)}° ${ascSign.sign.glyph} ${ascSign.sign.name}</span>
+        </div>
+        <div class="natal-legend-item">
+          <span class="natal-legend-planet"><span class="glyph">⟟</span> Medio Cielo</span>
+          <span class="natal-legend-detail">${mcSign.deg.toFixed(1)}° ${mcSign.sign.glyph} ${mcSign.sign.name}</span>
+        </div>
+        <p class="natal-legend-heading" style="margin-top:1.2rem;">Planetas</p>
+        ${rows}`;
+    }
+
+    const form = document.getElementById('natal-form');
+    const statusEl = document.getElementById('natal-status');
+    const resultEl = document.getElementById('natal-result');
+    const wheelWrap = document.getElementById('natal-wheel-wrap');
+    const legendEl = document.getElementById('natal-legend');
+    const submitBtn = document.getElementById('natal-submit');
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        statusEl.classList.remove('error');
+        statusEl.textContent = 'Ubicando tu lugar de nacimiento...';
+        resultEl.classList.remove('visible');
+        submitBtn.disabled = true;
+
+        try {
+          // Red de seguridad: si por scroll rápido o un link directo a
+          // #carta-natal las librerías todavía no terminaron de cargar,
+          // esperamos acá (normalmente ya están listas y esto es instantáneo).
+          if (window.loadNatalLibraries) {
+            await window.loadNatalLibraries();
+          }
+
+          const dateVal = document.getElementById('natal-date').value;
+          const timeVal = document.getElementById('natal-time').value;
+          const placeVal = document.getElementById('natal-place').value.trim();
+          if (!dateVal || !timeVal || !placeVal) throw new Error('Completá los tres campos.');
+
+          const [year, month, day] = dateVal.split('-').map(Number);
+          const [hour, minute] = timeVal.split(':').map(Number);
+
+          const geo = await geocode(placeVal);
+          statusEl.textContent = 'Calculando posiciones planetarias...';
+
+          const chart = computeChart({ year, month, day, hour, minute, lat: geo.lat, lon: geo.lon });
+
+          wheelWrap.innerHTML = renderWheel(chart);
+          legendEl.innerHTML = renderLegend(chart);
+          resultEl.classList.add('visible');
+          statusEl.textContent = `Carta calculada para ${geo.label.split(',').slice(0, 2).join(',')} · zona horaria ${chart.tzName}`;
+        } catch (err) {
+          statusEl.classList.add('error');
+          statusEl.textContent = err.message || 'Ocurrió un error al calcular la carta.';
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>
