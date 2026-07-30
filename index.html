@@ -217,7 +217,14 @@
     background-image: 
       radial-gradient(1px 1px at 10% 20%, rgba(201,152,47,0.55) 100%, transparent),
       radial-gradient(1px 1px at 80% 40%, rgba(47,118,129,0.45) 100%, transparent),
-      radial-gradient(1.5px 1.5px at 30% 70%, rgba(201,152,47,0.5) 100%, transparent);
+      radial-gradient(1.5px 1.5px at 30% 70%, rgba(201,152,47,0.5) 100%, transparent),
+      radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,0.4) 100%, transparent),
+      radial-gradient(1px 1px at 5% 85%, rgba(201,152,47,0.4) 100%, transparent),
+      radial-gradient(1.5px 1.5px at 65% 55%, rgba(47,118,129,0.4) 100%, transparent),
+      radial-gradient(1px 1px at 92% 65%, rgba(255,255,255,0.35) 100%, transparent),
+      radial-gradient(1px 1px at 40% 35%, rgba(201,152,47,0.35) 100%, transparent),
+      radial-gradient(1.5px 1.5px at 75% 90%, rgba(47,118,129,0.35) 100%, transparent),
+      radial-gradient(1px 1px at 15% 45%, rgba(255,255,255,0.3) 100%, transparent);
     background-size: 250px 250px;
     opacity: 0.5;
     animation: starDrift 150s linear infinite;
@@ -229,7 +236,11 @@
     background-image: 
       radial-gradient(2px 2px at 90% 80%, rgba(47,118,129,0.35) 100%, transparent),
       radial-gradient(2px 2px at 50% 10%, rgba(201,152,47,0.5) 100%, transparent),
-      radial-gradient(1px 1px at 20% 50%, rgba(201,152,47,0.4) 100%, transparent);
+      radial-gradient(1px 1px at 20% 50%, rgba(201,152,47,0.4) 100%, transparent),
+      radial-gradient(1.5px 1.5px at 35% 85%, rgba(255,255,255,0.35) 100%, transparent),
+      radial-gradient(1px 1px at 70% 25%, rgba(47,118,129,0.3) 100%, transparent),
+      radial-gradient(2px 2px at 10% 15%, rgba(201,152,47,0.3) 100%, transparent),
+      radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.3) 100%, transparent);
     background-size: 400px 400px;
     opacity: 0.5;
     animation: starDrift 90s linear infinite reverse;
@@ -270,6 +281,46 @@
   .tw-6 { top: 55%; left: 35%; animation-duration: 4.2s; animation-delay: 2.6s; color: var(--gold); }
   .tw-7 { top: 6%; left: 55%; animation-duration: 3.9s; animation-delay: 0.9s; }
   .tw-8 { top: 90%; left: 15%; animation-duration: 4.7s; animation-delay: 1.9s; }
+
+  /* =========================================
+     PARTÍCULAS MÍSTICAS
+     Pocas, grandes y lentas: todo el "costo" es un único radial-gradient
+     por partícula (sin blur ni box-shadow) y una animación que solo usa
+     transform/opacity — igual de liviano en un celular de gama baja que
+     en desktop, así que se dejan activas en todos los tamaños de pantalla.
+     ========================================= */
+  .mystic-particle {
+    position: fixed;
+    z-index: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(201,152,47,0.22) 0%, rgba(201,152,47,0.07) 45%, transparent 72%);
+    animation: floatMystic 26s ease-in-out infinite;
+    will-change: transform;
+  }
+  .mp-1 {
+    width: 220px; height: 220px;
+    top: 14%; left: 6%;
+    animation-duration: 27s;
+  }
+  .mp-2 {
+    width: 170px; height: 170px;
+    bottom: 10%; right: 8%;
+    background: radial-gradient(circle, rgba(47,118,129,0.2) 0%, rgba(47,118,129,0.06) 45%, transparent 72%);
+    animation-duration: 33s;
+    animation-delay: -9s;
+  }
+  .mp-3 {
+    width: 260px; height: 260px;
+    top: 52%; right: 22%;
+    animation-duration: 40s;
+    animation-delay: -17s;
+  }
+
+  @keyframes floatMystic {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.65; }
+    50% { transform: translate(36px, -54px) scale(1.15); opacity: 1; }
+  }
 
   /* =========================================
      CONSTELACIÓN SVG
@@ -1090,9 +1141,6 @@
       animation: none;
       opacity: 0.3;
     }
-    .shooting-star {
-      display: none;
-    }
     .constellation-svg .const-a line,
     .constellation-svg .const-b line {
       animation: none;
@@ -1110,6 +1158,7 @@
     .shooting-star,
     .cross-flare,
     .zodiac-bg,
+    .mystic-particle,
     .stars-layer-1,
     .stars-layer-2,
     .orbital-ring,
@@ -1219,6 +1268,10 @@
   <div class="shooting-star ss-1"></div>
   <div class="shooting-star ss-2"></div>
   <div class="shooting-star ss-3"></div>
+
+  <div class="mystic-particle mp-1"></div>
+  <div class="mystic-particle mp-2"></div>
+  <div class="mystic-particle mp-3"></div>
 
   <div class="zodiac-bg z-1">♈</div>
   <div class="zodiac-bg z-2">♓</div>
