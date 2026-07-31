@@ -151,31 +151,29 @@
     border-bottom: 1px solid rgba(201, 152, 47, 0.15);
   }
 
-  /* --- TÍTULO CON SU ANIMACIÓN ORIGINAL RESTAURADA --- */
-  /* Título con brillo forzado y blindado contra conflictos de color */
+  /* Título con animación limpia y compatible */
   .site-header .brand-title {
-    font-family: var(--font-script) !important;
-    font-size: clamp(1.8rem, 4vw, 3rem) !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.02em !important;
+    font-family: var(--font-script);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
     
-    /* Degradado de colores base */
-    background: linear-gradient(100deg, var(--ink) 20%, var(--gold) 40%, #fff8e2 50%, var(--gold) 60%, var(--ink) 80%) !important;
-    background-size: 250% 100% !important;
+    /* Degradado y soporte unificado */
+    background: linear-gradient(100deg, var(--ink) 20%, var(--gold) 40%, #fff8e2 50%, var(--gold) 60%, var(--ink) 80%);
+    background-size: 250% 100%;
     
-    /* Propiedades estrictas para que el fondo se convierta en el texto */
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important; /* Respaldo para que no se ponga negro */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold); /* Color de respaldo por si el navegador no soporta clip */
     
-    text-shadow: 0 0 20px rgba(201, 152, 47, 0.15) !important;
-    position: relative !important;
-    animation: titleShimmer 6s linear infinite !important;
-    cursor: pointer !important;
-    flex-grow: 1 !important;
-    text-align: center !important;
-    margin: 0 10px !important;
+    text-shadow: 0 0 20px rgba(201, 152, 47, 0.15);
+    position: relative;
+    animation: titleShimmer 6s linear infinite;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+    margin: 0 10px;
   }
 
   @keyframes titleShimmer {
@@ -211,22 +209,17 @@
     box-shadow: 0 0 10px rgba(201, 152, 47, 0.2);
   }
 
-  /* --- ADAPTACIÓN PARA MÓVILES MUY PEQUEÑOS (Menos de 480px) --- */
+  /* --- ADAPTACIÓN PARA MÓVILES --- */
   @media (max-width: 480px) {
-    /* Ocultamos el texto largo del botón en celular para que no colapse el espacio */
     .nav-sobre-mi-btn .btn-text {
       display: none; 
     }
-    
-    /* El botón se vuelve compacto (solo el icono) */
     .nav-sobre-mi-btn {
       padding: 8px;
       border-radius: 50%;
     }
-
-    /* Ajustamos el tamaño del título para que respire con la animación activa */
     .brand-title {
-      font-size: 1.4rem !important;
+      font-size: 1.4rem;
       letter-spacing: 0;
       margin: 0 5px;
     }
