@@ -134,9 +134,7 @@
     background-size: 160px 160px;
   }
 
-  /* =========================================
-     HEADER SUPERIOR - ALQUIMIA SAGRADA
-     ========================================= */
+ /* Header Superior - Alquimia Sagrada */
   .site-header {
     position: fixed;
     top: 0;
@@ -144,10 +142,10 @@
     width: 100%;
     z-index: 90;
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Distribuye elementos a los extremos */
     align-items: center;
-    padding: 14px 20px;
-    background: rgba(250, 243, 232, 0.75);
+    padding: 12px 16px;
+    background: rgba(250, 243, 232, 0.85);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(201, 152, 47, 0.15);
@@ -155,7 +153,7 @@
 
   .brand-title {
     font-family: var(--font-script);
-    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 700;
     letter-spacing: 0.02em;
     color: var(--gold);
@@ -168,23 +166,32 @@
     position: relative;
     animation: titleShimmer 6s linear infinite;
     cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+    margin: 0 10px;
   }
 
-  @keyframes titleShimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+  /* Estilo para el botón del Header en el index */
+  .nav-sobre-mi-btn {
+    position: static; /* Quitamos el absolute que generaba superposición */
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--text-main);
+    padding: 5px 12px;
+    border-radius: 50px;
+    border: 1px solid var(--gold-dim);
+    background: rgba(255, 250, 240, 0.6);
+    backdrop-filter: blur(8px);
+    white-space: nowrap;
+    transition: all 0.3s ease;
   }
-
-  .brand-title::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 1px;
-    background: var(--gold);
-    box-shadow: 0 0 8px var(--gold);
+  .nav-sobre-mi-btn:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px rgba(201, 152, 47, 0.2);
   }
 
   /* =========================================
