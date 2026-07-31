@@ -160,33 +160,41 @@
     border-bottom: 1px solid rgba(201, 152, 47, 0.15);
   }
 
-  /* Título con animación limpia y compatible */
+  /* Título: base sólida dorada SIEMPRE visible + brillo animado superpuesto
+     solo cuando el navegador soporta recorte de texto en gradiente. Así el
+     título nunca queda invisible ni tapado por un fallback mal aplicado. */
   .site-header .brand-title {
+    position: relative;
     font-family: var(--font-script);
     font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 700;
     letter-spacing: 0.02em;
-    
-    /* Degradado y soporte unificado */
-    background: linear-gradient(100deg, var(--ink) 20%, var(--gold) 40%, #fff8e2 50%, var(--gold) 60%, var(--ink) 80%);
-    background-size: 250% 100%;
-    
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: var(--gold); /* Color de respaldo por si el navegador no soporta clip */
-    
-    text-shadow: 0 0 20px rgba(201, 152, 47, 0.15);
-    position: relative;
-    animation: titleShimmer 6s linear infinite;
+    color: var(--gold);
     cursor: pointer;
     flex-grow: 1;
     text-align: center;
     margin: 0 10px;
   }
 
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .site-header .brand-title::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, var(--ink) 30%, var(--gold) 45%, #fff8e2 50%, var(--gold) 55%, var(--ink) 70%);
+      background-size: 250% 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: titleShimmer 3.5s linear infinite;
+      pointer-events: none;
+    }
+  }
+
   @keyframes titleShimmer {
-    0% { background-position: 100% 0; }
+    0% { background-position: 150% 0; }
     100% { background-position: -150% 0; }
   }
 
@@ -1211,7 +1219,7 @@
     .orbital-ring-outer,
     .orb,
     .portal-frame,
-    .brand-title,
+    .brand-title::after,
     .constellation-svg .const-a line,
     .constellation-svg .const-b line {
       animation: none !important;
@@ -1255,7 +1263,7 @@
 
   <!-- HEADER FIJO CON EL NOMBRE DEL EMPRENDIMIENTO -->
  <header class="site-header">
-   <h1 class="brand-title" style="font-family: var(--font-script) !important; background: linear-gradient(100deg, #111 20%, #c5a059 40%, #fff8e2 50%, #c5a059 60%, #111 80%) !important; background-size: 250% 100% !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important; animation: titleShimmer 6s linear infinite !important;">
+   <h1 class="brand-title" data-text="Alquimia Sagrada">
   Alquimia Sagrada
 </h1>
     <a href="sobre-mi.html" class="nav-sobre-mi-btn">
