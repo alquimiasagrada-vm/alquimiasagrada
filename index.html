@@ -142,7 +142,7 @@
     width: 100%;
     z-index: 90;
     display: flex;
-    justify-content: space-between; /* Distribuye elementos a los extremos */
+    justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
     background: rgba(250, 243, 232, 0.85);
@@ -151,6 +151,7 @@
     border-bottom: 1px solid rgba(201, 152, 47, 0.15);
   }
 
+  /* --- TÍTULO CON SU ANIMACIÓN ORIGINAL RESTAURADA --- */
   .brand-title {
     font-family: var(--font-script);
     font-size: clamp(1.8rem, 4vw, 3rem);
@@ -164,11 +165,16 @@
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 20px rgba(201, 152, 47, 0.15);
     position: relative;
-    animation: titleShimmer 6s linear infinite;
+    animation: titleShimmer 6s linear infinite; /* <-- ¡Aquí está de vuelta la animación! */
     cursor: pointer;
     flex-grow: 1;
     text-align: center;
     margin: 0 10px;
+  }
+
+  @keyframes titleShimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -150% 0; }
   }
 
   /* Estilo para el botón del Header en el index */
@@ -189,6 +195,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    z-index: 2;
   }
 
   .nav-sobre-mi-btn:hover {
@@ -198,34 +205,24 @@
     box-shadow: 0 0 10px rgba(201, 152, 47, 0.2);
   }
 
-  /* OPCIONAL: Si quieres equilibrar el header por si hay elementos a la derecha, 
-     puedes añadir un bloque vacío o un balanceador a la derecha si no tienes nada más. */
-  .site-header::after {
-    content: "";
-    width: 30px; /* Equilibra visualmente el espacio izquierdo si está el botón solo */
-  }
-
   /* --- ADAPTACIÓN PARA MÓVILES MUY PEQUEÑOS (Menos de 480px) --- */
   @media (max-width: 480px) {
-    /* Ocultamos el texto largo del botón y dejamos solo el icono o una palabra corta */
+    /* Ocultamos el texto largo del botón en celular para que no colapse el espacio */
     .nav-sobre-mi-btn .btn-text {
       display: none; 
     }
     
-    /* Hacemos que el botón sea redondo y compacto */
+    /* El botón se vuelve compacto (solo el icono) */
     .nav-sobre-mi-btn {
       padding: 8px;
       border-radius: 50%;
     }
 
-    /* Reducimos un poco más el título para ganar espacio */
+    /* Ajustamos el tamaño del título para que respire con la animación activa */
     .brand-title {
-      font-size: 1.5rem !important;
+      font-size: 1.4rem !important;
       letter-spacing: 0;
-    }
-    
-    .site-header::after {
-      display: none; /* Quitamos el balanceador en móvil extremo */
+      margin: 0 5px;
     }
   }
   /* =========================================
