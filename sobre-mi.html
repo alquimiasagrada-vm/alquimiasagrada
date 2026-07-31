@@ -9,12 +9,69 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-<!-- Tipografías -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Tangerine:wght@400;700&family=Manrope:wght@300;400;500;600&display=optional" rel="stylesheet">
+<!-- Precarga de las fuentes que se ven apenas carga la página (título del
+     header y encabezados de las tarjetas), igual que en index.html. -->
+<link rel="preload" href="assets/fonts/Tangerine-Bold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="assets/fonts/CormorantGaramond-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
 
+<!-- Tipografías: auto-alojadas en assets/fonts/ (mismo criterio que index.html) -->
 <style>
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-SemiBold.ttf') format('truetype');
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-Bold.ttf') format('truetype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-Italic.ttf') format('truetype');
+    font-weight: 400; font-style: italic; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('assets/fonts/CormorantGaramond-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600; font-style: italic; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Tangerine';
+    src: url('assets/fonts/Tangerine-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Tangerine';
+    src: url('assets/fonts/Tangerine-Bold.ttf') format('truetype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/Manrope-Light.ttf') format('truetype');
+    font-weight: 300; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/Manrope-Regular.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/Manrope-Medium.ttf') format('truetype');
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Manrope';
+    src: url('assets/fonts/Manrope-SemiBold.ttf') format('truetype');
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+
   :root {
     --bg-base: #faf3e8;
     --ink: #1c3144;
@@ -102,10 +159,28 @@
     background: linear-gradient(100deg, var(--ink) 20%, var(--gold) 40%, #fff8e2 50%, var(--gold) 60%, var(--ink) 80%);
     background-size: 250% 100%;
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(201, 152, 47, 0.15);
+    position: relative;
+    animation: titleShimmer 6s linear infinite;
     cursor: pointer;
     text-align: center;
     flex-grow: 1;
     margin: 0 10px;
+  }
+
+  @keyframes titleShimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -150% 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-title {
+      animation: none !important;
+    }
+    * {
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   /* Fondo Cósmico */
