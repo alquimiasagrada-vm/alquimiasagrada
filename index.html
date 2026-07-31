@@ -173,20 +173,24 @@
 
   /* Estilo para el botón del Header en el index */
   .nav-sobre-mi-btn {
-    position: static; /* Quitamos el absolute que generaba superposición */
+    position: static;
     font-family: var(--font-body);
     font-size: 0.78rem;
     font-weight: 500;
     text-decoration: none;
     color: var(--text-main);
-    padding: 5px 12px;
+    padding: 6px 12px;
     border-radius: 50px;
     border: 1px solid var(--gold-dim);
     background: rgba(255, 250, 240, 0.6);
     backdrop-filter: blur(8px);
     white-space: nowrap;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
+
   .nav-sobre-mi-btn:hover {
     color: var(--gold);
     border-color: var(--gold);
@@ -194,6 +198,36 @@
     box-shadow: 0 0 10px rgba(201, 152, 47, 0.2);
   }
 
+  /* OPCIONAL: Si quieres equilibrar el header por si hay elementos a la derecha, 
+     puedes añadir un bloque vacío o un balanceador a la derecha si no tienes nada más. */
+  .site-header::after {
+    content: "";
+    width: 30px; /* Equilibra visualmente el espacio izquierdo si está el botón solo */
+  }
+
+  /* --- ADAPTACIÓN PARA MÓVILES MUY PEQUEÑOS (Menos de 480px) --- */
+  @media (max-width: 480px) {
+    /* Ocultamos el texto largo del botón y dejamos solo el icono o una palabra corta */
+    .nav-sobre-mi-btn .btn-text {
+      display: none; 
+    }
+    
+    /* Hacemos que el botón sea redondo y compacto */
+    .nav-sobre-mi-btn {
+      padding: 8px;
+      border-radius: 50%;
+    }
+
+    /* Reducimos un poco más el título para ganar espacio */
+    .brand-title {
+      font-size: 1.5rem !important;
+      letter-spacing: 0;
+    }
+    
+    .site-header::after {
+      display: none; /* Quitamos el balanceador en móvil extremo */
+    }
+  }
   /* =========================================
      FONDO CÓSMICO ANIMADO
      ========================================= */
