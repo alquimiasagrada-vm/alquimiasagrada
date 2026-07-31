@@ -152,24 +152,30 @@
   }
 
   /* --- TÍTULO CON SU ANIMACIÓN ORIGINAL RESTAURADA --- */
-  .brand-title {
-    font-family: var(--font-script);
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: var(--gold);
-    background: linear-gradient(100deg, var(--ink) 20%, var(--gold) 40%, #fff8e2 50%, var(--gold) 60%, var(--ink) 80%);
-    background-size: 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(201, 152, 47, 0.15);
-    position: relative;
-    animation: titleShimmer 6s linear infinite; /* <-- ¡Aquí está de vuelta la animación! */
-    cursor: pointer;
-    flex-grow: 1;
-    text-align: center;
-    margin: 0 10px;
+  /* Título con brillo forzado y blindado contra conflictos de color */
+  .site-header .brand-title {
+    font-family: var(--font-script) !important;
+    font-size: clamp(1.8rem, 4vw, 3rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em !important;
+    
+    /* Degradado de colores base */
+    background: linear-gradient(100deg, var(--ink) 20%, var(--gold) 40%, #fff8e2 50%, var(--gold) 60%, var(--ink) 80%) !important;
+    background-size: 250% 100% !important;
+    
+    /* Propiedades estrictas para que el fondo se convierta en el texto */
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important; /* Respaldo para que no se ponga negro */
+    
+    text-shadow: 0 0 20px rgba(201, 152, 47, 0.15) !important;
+    position: relative !important;
+    animation: titleShimmer 6s linear infinite !important;
+    cursor: pointer !important;
+    flex-grow: 1 !important;
+    text-align: center !important;
+    margin: 0 10px !important;
   }
 
   @keyframes titleShimmer {
