@@ -961,6 +961,35 @@
     padding: 10px;
     gap: 4px;
   }
+  /* Efecto de revelación: un brillo que cruza la carta + un pequeño "pop"
+     de escala, UNA sola vez al girar (no en loop). Solo anima
+     transform/opacity —lo procesa el GPU por composición, sin recalcular
+     layout ni repintar— así que el costo es mínimo incluso en celulares
+     viejos. Respeta prefers-reduced-motion más abajo. */
+  .tarot-face-front .tarot-face-clip::after {
+    content: '';
+    position: absolute;
+    inset: -20% -60%;
+    background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,0.6) 50%, transparent 58%);
+    transform: translateX(-130%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .tarot-card-single.tarot-flipped .tarot-face-front .tarot-face-clip::after {
+    animation: tarotShine 0.8s ease-out 0.75s 1 both;
+  }
+  @keyframes tarotShine {
+    0% { transform: translateX(-130%); opacity: 0; }
+    18% { opacity: 1; }
+    100% { transform: translateX(130%); opacity: 0; }
+  }
+  .tarot-card-single.tarot-flipped .tarot-face-front .tarot-face-clip {
+    animation: tarotPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.75s 1 both;
+  }
+  @keyframes tarotPop {
+    0% { transform: scale(0.94); }
+    100% { transform: scale(1); }
+  }
   .tarot-front-art {
     width: 100%;
     flex: 1;
@@ -1069,6 +1098,10 @@
   @media (prefers-reduced-motion: reduce) {
     .tarot-card-inner, .tarot-reading, .tarot-front-art {
       transition-duration: 0.25s !important;
+    }
+    .tarot-face-front .tarot-face-clip,
+    .tarot-face-front .tarot-face-clip::after {
+      animation: none !important;
     }
   }
 
@@ -2376,3 +2409,4 @@
 
 </body>
 </html>
+
