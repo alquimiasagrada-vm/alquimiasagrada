@@ -1153,15 +1153,25 @@
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     border-radius: 14px;
     border: 1px solid var(--gold-dim);
+  }
+  /* El recorte (overflow + radio) va en un wrapper interno separado del
+     elemento que tiene backface-visibility. Ponerlos juntos en el mismo
+     elemento rompe el "ocultar cara trasera" en varios navegadores (sobre
+     todo mobile), dejando el dorso pisando al frente después de girar. */
+  .tarot-face-clip {
+    position: absolute;
+    inset: 0;
     overflow: hidden;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .tarot-face-back {
+  .tarot-face-back .tarot-face-clip {
     background:
       repeating-linear-gradient(45deg, rgba(201,152,47,0.08) 0 8px, transparent 8px 16px),
       linear-gradient(160deg, #23384c, var(--ink));
@@ -1171,8 +1181,13 @@
     color: var(--gold);
     font-size: 2.2rem;
     text-shadow: 0 0 14px rgba(201, 152, 47, 0.6);
-    position: relative;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 1;
+    pointer-events: none;
   }
   .tarot-face-back img {
     position: absolute;
@@ -1183,8 +1198,10 @@
   }
 
   .tarot-face-front {
-    background: linear-gradient(165deg, #fffaf0, #f3e8d3);
     transform: rotateY(180deg);
+  }
+  .tarot-face-front .tarot-face-clip {
+    background: linear-gradient(165deg, #fffaf0, #f3e8d3);
     flex-direction: column;
     padding: 10px;
     gap: 4px;
@@ -1732,13 +1749,17 @@
       <button type="button" class="tarot-card-single" id="tarot-card-single" aria-label="Revelar tu carta del día">
         <div class="tarot-card-inner" id="tarot-card-inner">
           <div class="tarot-face tarot-face-back">
-            <img src="./assets/astrales/dorso.jpg" alt="" onerror="this.remove()">
+            <div class="tarot-face-clip">
+              <img src="./assets/astrales/dorso.jpg" alt="" onerror="this.remove()">
+            </div>
           </div>
           <div class="tarot-face tarot-face-front">
-            <span class="tarot-front-number" id="tarot-front-number"></span>
-            <span class="tarot-front-art" id="tarot-front-art"></span>
-            <span class="tarot-front-name" id="tarot-front-name"></span>
-            <span class="tarot-front-orientation" id="tarot-front-orientation"></span>
+            <div class="tarot-face-clip">
+              <span class="tarot-front-number" id="tarot-front-number"></span>
+              <span class="tarot-front-art" id="tarot-front-art"></span>
+              <span class="tarot-front-name" id="tarot-front-name"></span>
+              <span class="tarot-front-orientation" id="tarot-front-orientation"></span>
+            </div>
           </div>
         </div>
       </button>
