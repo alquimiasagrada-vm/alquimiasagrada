@@ -900,6 +900,12 @@
     line-height: 1.6;
   }
 
+  .natal-section .agenda-sub {
+    padding-top: 1.4rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(201, 152, 47, 0.18);
+  }
+
   .agenda-selected {
     color: var(--gold);
     font-size: 0.9rem;
@@ -940,7 +946,7 @@
     background: rgba(255, 250, 240, 0.4);
     border-bottom: 1px solid rgba(201, 152, 47, 0.2);
     content-visibility: auto;
-    contain-intrinsic-size: auto 750px;
+    contain-intrinsic-size: auto 950px;
   }
 
   .natal-form {
@@ -995,6 +1001,29 @@
     font-size: 0.85rem;
     color: rgba(92, 109, 126, 0.8);
     font-style: italic;
+  }
+
+  .natal-intro {
+    max-width: 560px;
+    margin: 0 auto 2.2rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  .natal-closing {
+    margin-top: 3rem;
+    padding-top: 2.4rem;
+    border-top: 1px solid rgba(201, 152, 47, 0.18);
+  }
+
+  .natal-closing-text {
+    max-width: 480px;
+    margin: 0 auto 1.3rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--ink);
   }
 
   .natal-status {
@@ -1062,6 +1091,213 @@
     color: var(--teal);
     margin-bottom: 0.6rem;
     font-size: 1.1rem;
+  }
+
+  /* =========================================
+     TU CARTA DEL DÍA (TAROT · CARTA ÚNICA)
+     ========================================= */
+  .tarot-section {
+    position: relative;
+    z-index: 15;
+    padding: 100px 6vw;
+    text-align: center;
+    background: rgba(255, 250, 240, 0.35);
+    border-bottom: 1px solid rgba(201, 152, 47, 0.2);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 850px;
+  }
+
+  .tarot-section h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 4.5vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+  }
+
+  .tarot-stage {
+    margin-top: 2.5rem;
+  }
+
+  .tarot-card-single {
+    position: relative;
+    width: min(62vw, 250px);
+    aspect-ratio: 5/8;
+    margin: 0 auto;
+    perspective: 1400px;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .tarot-card-single:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 14px; }
+  .tarot-card-single.tarot-revealed { cursor: default; }
+
+  .tarot-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.4, 0.15, 0.2, 1);
+    filter: drop-shadow(0 14px 34px rgba(28, 49, 68, 0.28));
+  }
+  .tarot-card-single.tarot-flipped .tarot-card-inner {
+    transform: rotateY(180deg);
+  }
+  .tarot-card-single:not(.tarot-revealed):hover .tarot-card-inner {
+    transform: translateY(-6px);
+  }
+
+  .tarot-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    border: 1px solid var(--gold-dim);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tarot-face-back {
+    background:
+      repeating-linear-gradient(45deg, rgba(201,152,47,0.08) 0 8px, transparent 8px 16px),
+      linear-gradient(160deg, #23384c, var(--ink));
+  }
+  .tarot-face-back::before {
+    content: '✧';
+    color: var(--gold);
+    font-size: 2.2rem;
+    text-shadow: 0 0 14px rgba(201, 152, 47, 0.6);
+    position: relative;
+    z-index: 1;
+  }
+  .tarot-face-back img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tarot-face-front {
+    background: linear-gradient(165deg, #fffaf0, #f3e8d3);
+    transform: rotateY(180deg);
+    flex-direction: column;
+    padding: 10px;
+    gap: 4px;
+  }
+  .tarot-front-art {
+    width: 100%;
+    flex: 1;
+    border-radius: 8px;
+    border: 1px dashed var(--gold-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 2.4rem;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+  }
+  .tarot-front-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .tarot-card-single.tarot-reversed .tarot-front-art { transform: rotate(180deg); }
+
+  .tarot-front-number {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 1rem;
+  }
+  .tarot-front-name {
+    font-size: 0.85rem;
+    color: var(--ink);
+    text-align: center;
+    line-height: 1.2;
+  }
+  .tarot-front-orientation {
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    color: var(--teal);
+    text-transform: uppercase;
+  }
+
+  .tarot-hint {
+    margin-top: 1.4rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.1rem;
+  }
+
+  .tarot-status {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: rgba(92, 109, 126, 0.85);
+    min-height: 1.2em;
+  }
+  .tarot-status.error { color: #b5533c; }
+
+  .tarot-reading {
+    max-width: 540px;
+    margin: 2.4rem auto 0;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .tarot-reading.visible { opacity: 1; transform: translateY(0); }
+  .tarot-reading[hidden] { display: none; }
+
+  .tarot-reading-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .tarot-reading-orientation {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--teal);
+    border: 1px solid var(--teal-dim);
+    border-radius: 50px;
+    padding: 2px 12px;
+    margin-bottom: 1rem;
+  }
+  .tarot-reading-meaning {
+    color: var(--gold);
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .tarot-reading-desc {
+    color: var(--text-muted);
+    font-size: 1.02rem;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+  }
+  .tarot-next {
+    font-size: 0.85rem;
+    color: rgba(92, 109, 126, 0.8);
+  }
+
+  @media (max-width: 640px) {
+    .tarot-section { padding: 70px 6vw; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tarot-card-inner, .tarot-reading, .tarot-front-art {
+      transition-duration: 0.25s !important;
+    }
   }
 
   /* =========================================
@@ -1486,10 +1722,46 @@
 
   </main>
 
+  <!-- TU CARTA DEL DÍA (TAROT) -->
+  <section id="carta-del-dia" class="tarot-section">
+    <div class="agenda-badge"><span>✦</span></div>
+    <h2>Tu Carta del Día</h2>
+    <p class="agenda-sub">Concentrate un instante y tocá la carta para revelar el mensaje que el universo tiene para vos hoy.</p>
+
+    <div class="tarot-stage" id="tarot-stage">
+      <button type="button" class="tarot-card-single" id="tarot-card-single" aria-label="Revelar tu carta del día">
+        <div class="tarot-card-inner" id="tarot-card-inner">
+          <div class="tarot-face tarot-face-back">
+            <img src="./assets/astrales/dorso.jpg" alt="" onerror="this.remove()">
+          </div>
+          <div class="tarot-face tarot-face-front">
+            <span class="tarot-front-number" id="tarot-front-number"></span>
+            <span class="tarot-front-art" id="tarot-front-art"></span>
+            <span class="tarot-front-name" id="tarot-front-name"></span>
+            <span class="tarot-front-orientation" id="tarot-front-orientation"></span>
+          </div>
+        </div>
+      </button>
+
+      <p class="tarot-hint" id="tarot-hint">Tocá la carta para revelarla</p>
+      <p class="tarot-status" id="tarot-status"></p>
+
+      <div class="tarot-reading" id="tarot-reading" hidden>
+        <h3 class="tarot-reading-title" id="tarot-reading-title"></h3>
+        <span class="tarot-reading-orientation" id="tarot-reading-orientation"></span>
+        <p class="tarot-reading-meaning" id="tarot-reading-meaning"></p>
+        <p class="tarot-reading-desc" id="tarot-reading-desc"></p>
+        <p class="tarot-next">Volvé mañana para descubrir una nueva carta.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- CALCULADORA DE CARTA NATAL -->
   <section id="carta-natal" class="natal-section">
     <div class="agenda-badge"><span>✦</span></div>
     <h2>Tu Carta Natal</h2>
+    <p class="natal-intro">Conocer las posiciones de tus astros aporta claridad objetiva sobre tus tendencias y desafíos. El trabajo clínico y terapéutico posterior es el que facilita transformar esa información en herramientas prácticas para tu bienestar.</p>
+
     <p class="agenda-sub">Ingresá tu fecha, hora y lugar de nacimiento para ver el mapa del cielo en el momento en que naciste: tus planetas, tus signos y tus casas.</p>
 
     <form class="natal-form" id="natal-form">
@@ -1515,6 +1787,22 @@
     <div class="natal-result" id="natal-result">
       <div class="natal-wheel-wrap" id="natal-wheel-wrap"></div>
       <div class="natal-legend" id="natal-legend"></div>
+    </div>
+
+    <div class="natal-closing">
+      <p class="natal-closing-text">¿Querés profundizar en lo que revelan tus astros? Agendá una lectura personalizada.</p>
+      <a
+        href="https://wa.me/5493535654858?text=Hola!%20Vi%20mi%20carta%20natal%20en%20la%20web%20y%20quiero%20agendar%20una%20lectura%20personalizada."
+        target="_blank"
+        rel="noopener"
+        class="btn whatsapp-btn"
+        id="natal-whatsapp-cta"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.24 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.4c0-4.54 3.7-8.22 8.25-8.22zm-4.53 4.71c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.03 0 1.2.87 2.35.99 2.51.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.34-.76-1.83-.2-.48-.4-.42-.55-.42h-.14z"/>
+        </svg>
+        <span>💬 Consultar por WhatsApp</span>
+      </a>
     </div>
   </section>
 
@@ -2102,6 +2390,221 @@
         }
       });
     }
+  })();
+  </script>
+
+  <!-- =========================================
+       TU CARTA DEL DÍA · CONTENIDO (editable sin tocar la lógica)
+       ========================================= -->
+  <script>
+    // Los 22 Arcanos Mayores, con significado derecho e invertido.
+    // "image" apunta a ./assets/astrales/{slug}.jpg — subí ahí los archivos
+    // con ese mismo nombre exacto (y un dorso común en dorso.jpg).
+    const TAROT_ARCANA = [
+      { id: 0, numeral: '0', name: 'El Loco',
+        upright: { meaning: 'Comienzos, espontaneidad, fe en lo desconocido', description: 'Un nuevo capítulo se abre ante vos. Es momento de dar el primer paso con el corazón liviano, aunque no tengas todas las respuestas.' },
+        reversed: { meaning: 'Imprudencia, dudas, miedo a arriesgar', description: 'Algo te frena antes de empezar. Quizás estés actuando sin pensar, o paralizada por el miedo a equivocarte — ambos extremos piden equilibrio.' } },
+      { id: 1, numeral: 'I', name: 'El Mago',
+        upright: { meaning: 'Voluntad, manifestación, recursos propios', description: 'Tenés todas las herramientas que necesitás al alcance de la mano. Es momento de transformar la intención en acción concreta.' },
+        reversed: { meaning: 'Manipulación, potencial desaprovechado', description: 'Tus talentos están ahí, pero algo los está bloqueando — puede ser inseguridad, dispersión, o el uso indebido del propio poder.' } },
+      { id: 2, numeral: 'II', name: 'La Sacerdotisa',
+        upright: { meaning: 'Intuición, misterio, sabiduría interior', description: 'Hay respuestas que no se encuentran razonando, sino escuchando el silencio. Confiá en lo que tu intuición te viene diciendo.' },
+        reversed: { meaning: 'Secretos, desconexión de una misma', description: 'Estás ignorando una voz interior que insiste. Puede ser momento de hacer silencio y volver a escucharte.' } },
+      { id: 3, numeral: 'III', name: 'La Emperatriz',
+        upright: { meaning: 'Abundancia, fertilidad, conexión con la naturaleza', description: 'Un momento fértil de creación y crecimiento. Permitite recibir y disfrutar de lo que estás gestando.' },
+        reversed: { meaning: 'Bloqueo creativo, descuido propio', description: 'Te estás postergando a vos misma. Revisá si estás cuidando tu energía tanto como cuidás a los demás.' } },
+      { id: 4, numeral: 'IV', name: 'El Emperador',
+        upright: { meaning: 'Estructura, autoridad, estabilidad', description: 'Es tiempo de poner orden y sostener tu palabra. La disciplina de hoy construye la seguridad de mañana.' },
+        reversed: { meaning: 'Rigidez, control excesivo', description: 'El control se volvió una prisión. Quizás necesites soltar un poco de estructura para volver a fluir.' } },
+      { id: 5, numeral: 'V', name: 'El Hierofante',
+        upright: { meaning: 'Tradición, aprendizaje, guía espiritual', description: 'Un maestro, una enseñanza o una tradición tienen algo valioso para ofrecerte en este momento.' },
+        reversed: { meaning: 'Cuestionamiento de creencias, rebeldía', description: 'Estás poniendo en duda lo que antes dabas por sentado — es una parte necesaria de encontrar tu propio camino.' } },
+      { id: 6, numeral: 'VI', name: 'Los Enamorados',
+        upright: { meaning: 'Unión, elección, alineación de valores', description: 'Una decisión importante está frente a vos. Elegí desde el corazón, en sintonía con lo que realmente valorás.' },
+        reversed: { meaning: 'Desequilibrio, conflicto de valores', description: 'Hay una tensión entre lo que sentís y lo que hacés. Revisar tus prioridades te va a traer claridad.' } },
+      { id: 7, numeral: 'VII', name: 'El Carro',
+        upright: { meaning: 'Determinación, avance, victoria', description: 'Tenés la fuerza de voluntad para superar lo que se te presente. Mantené el rumbo con confianza.' },
+        reversed: { meaning: 'Falta de dirección, dispersión', description: 'Sentís que vas para todos lados a la vez. Antes de acelerar, definí hacia dónde realmente querés ir.' } },
+      { id: 8, numeral: 'VIII', name: 'La Fuerza',
+        upright: { meaning: 'Coraje, paciencia, fuerza interior serena', description: 'La verdadera fuerza no grita — sostiene. Enfrentás esta etapa con más templanza de la que creés tener.' },
+        reversed: { meaning: 'Autoduda, agotamiento emocional', description: 'Te estás exigiendo de más. Un poco de compasión hacia vos misma es lo que hace falta ahora.' } },
+      { id: 9, numeral: 'IX', name: 'El Ermitaño',
+        upright: { meaning: 'Introspección, búsqueda interior, guía propia', description: 'Es momento de hacer una pausa y mirar hacia adentro. Las respuestas que buscás están en el silencio, no afuera.' },
+        reversed: { meaning: 'Aislamiento excesivo, soledad no elegida', description: 'El retiro se volvió encierro. Quizás sea hora de volver a abrirte a los demás.' } },
+      { id: 10, numeral: 'X', name: 'La Rueda de la Fortuna',
+        upright: { meaning: 'Cambio, ciclos, un giro de destino', description: 'Algo está por moverse — un ciclo se cierra y otro comienza. Confiá en el movimiento natural de la vida.' },
+        reversed: { meaning: 'Resistencia al cambio, mala racha', description: 'Sentís que las cosas no están de tu lado. Recordá que los ciclos siempre vuelven a girar.' } },
+      { id: 11, numeral: 'XI', name: 'La Justicia',
+        upright: { meaning: 'Equilibrio, verdad, causa y efecto', description: 'Cada acción tiene su consecuencia. Este es un buen momento para actuar con honestidad y claridad.' },
+        reversed: { meaning: 'Injusticia, decisiones evasivas', description: 'Algo se siente desequilibrado o poco claro. Puede ser momento de asumir una responsabilidad que venís postergando.' } },
+      { id: 12, numeral: 'XII', name: 'El Colgado',
+        upright: { meaning: 'Rendición, nueva perspectiva, pausa', description: 'A veces avanzar es soltar el control y mirar la situación desde otro ángulo. La quietud también es un camino.' },
+        reversed: { meaning: 'Estancamiento, resistencia a soltar', description: 'Te estás aferrando a algo que ya no te sirve. Soltar no es perder, es hacer espacio.' } },
+      { id: 13, numeral: 'XIII', name: 'La Muerte',
+        upright: { meaning: 'Transformación, cierre, renacimiento', description: 'Algo en vos está terminando para dar lugar a algo nuevo. No lo temas: es parte del ciclo natural de crecer.' },
+        reversed: { meaning: 'Resistencia al cierre, estancamiento', description: 'Hay un final que estás evitando. Cuanto más lo postergués, más cuesta el proceso de renacer.' } },
+      { id: 14, numeral: 'XIV', name: 'La Templanza',
+        upright: { meaning: 'Equilibrio, paciencia, integración', description: 'Estás encontrando el punto medio entre extremos. Seguí mezclando con calma, sin apurar el resultado.' },
+        reversed: { meaning: 'Desequilibrio, excesos', description: 'Algo en tu vida está desbalanceado. Buscá dónde estás yendo de más, o de menos, y reencontrá el punto medio.' } },
+      { id: 15, numeral: 'XV', name: 'El Diablo',
+        upright: { meaning: 'Ataduras, deseo, sombra propia', description: 'Hay algo que te tiene atrapada — un hábito, un vínculo, un miedo. Reconocerlo ya es el primer paso para soltarlo.' },
+        reversed: { meaning: 'Liberación, ruptura de cadenas', description: 'Estás empezando a soltar aquello que te limitaba. El poder de elegir distinto vuelve a tus manos.' } },
+      { id: 16, numeral: 'XVI', name: 'La Torre',
+        upright: { meaning: 'Quiebre repentino, revelación, caída de lo falso', description: 'Algo se derrumba para revelar lo que realmente importa. Un cambio brusco puede ser, en el fondo, una liberación.' },
+        reversed: { meaning: 'Cambio evitado, crisis interna', description: 'Estás resistiendo un cambio que igual va a llegar. A veces es mejor dejar caer lo que ya no sostiene.' } },
+      { id: 17, numeral: 'XVII', name: 'La Estrella',
+        upright: { meaning: 'Esperanza, inspiración, confianza', description: 'Después de la tormenta, llega la calma. Esta carta te invita a volver a confiar y soñar.' },
+        reversed: { meaning: 'Desesperanza, desconexión de la fe', description: 'Sentís que la luz se apagó un poco. Recordá que la esperanza no desaparece, solo está esperando que la mires de nuevo.' } },
+      { id: 18, numeral: 'XVIII', name: 'La Luna',
+        upright: { meaning: 'Intuición, sueños, lo oculto que emerge', description: 'No todo es lo que parece. Confiá en tu intuición para atravesar esta etapa de incertidumbre.' },
+        reversed: { meaning: 'Confusión, miedos que se disipan', description: 'Los miedos que te venían persiguiendo empiezan a perder fuerza. La claridad está más cerca de lo que creés.' } },
+      { id: 19, numeral: 'XIX', name: 'El Sol',
+        upright: { meaning: 'Alegría, vitalidad, éxito', description: 'Un momento de luz, claridad y buena energía te acompaña. Disfrutalo con gratitud.' },
+        reversed: { meaning: 'Alegría postergada, exceso de optimismo', description: 'La luz está ahí, aunque cueste verla. Date permiso de encontrar pequeñas alegrías, aunque el panorama no sea perfecto.' } },
+      { id: 20, numeral: 'XX', name: 'El Juicio',
+        upright: { meaning: 'Renacimiento, llamado interior, evaluación', description: 'Es tiempo de un despertar — de mirar atrás con honestidad y dar un paso hacia quien querés ser.' },
+        reversed: { meaning: 'Autocrítica excesiva, dudas sobre el propio camino', description: 'Te estás juzgando con demasiada dureza. El cambio que buscás empieza con más compasión hacia vos misma.' } },
+      { id: 21, numeral: 'XXI', name: 'El Mundo',
+        upright: { meaning: 'Cumplimiento, integración, un ciclo completo', description: 'Un ciclo importante llega a su fin. Celebrá el camino recorrido antes de empezar el próximo.' },
+        reversed: { meaning: 'Cierre pendiente, sensación de incompletitud', description: 'Sentís que falta algo para cerrar esta etapa. Date el tiempo que necesites, no hay que apurar los finales.' } }
+    ].map(c => ({
+      ...c,
+      slug: c.id + '-' + c.name.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      image: './assets/astrales/' + c.id + '-' + c.name.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '.jpg'
+    }));
+  </script>
+
+  <!-- =========================================
+       TU CARTA DEL DÍA · LÓGICA
+       Por ahora el sorteo y el límite diario se resuelven en el navegador
+       (localStorage). Cuando esté listo el backend (/api/tarot/draw), solo
+       hay que reemplazar drawTodayCard() por un fetch — el resto (flip,
+       render, mensajes) queda igual.
+       ========================================= -->
+  <script>
+  (function () {
+    const cardBtn = document.getElementById('tarot-card-single');
+    const cardInner = document.getElementById('tarot-card-inner');
+    const hintEl = document.getElementById('tarot-hint');
+    const statusEl = document.getElementById('tarot-status');
+    const numberEl = document.getElementById('tarot-front-number');
+    const artEl = document.getElementById('tarot-front-art');
+    const nameEl = document.getElementById('tarot-front-name');
+    const orientationEl = document.getElementById('tarot-front-orientation');
+    const readingEl = document.getElementById('tarot-reading');
+    const readingTitleEl = document.getElementById('tarot-reading-title');
+    const readingOrientationEl = document.getElementById('tarot-reading-orientation');
+    const readingMeaningEl = document.getElementById('tarot-reading-meaning');
+    const readingDescEl = document.getElementById('tarot-reading-desc');
+
+    if (!cardBtn || !TAROT_ARCANA) return;
+
+    const STORAGE_KEY = 'tarotDailyDraw';
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function todayKey() {
+      return new Date().toDateString(); // fecha local del navegador
+    }
+
+    function getStoredDraw() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (data.date !== todayKey()) return null; // es de otro día
+        return data;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function storeDraw(cardId, reversed) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          date: todayKey(), cardId, reversed
+        }));
+      } catch (e) { /* localStorage no disponible: no persiste, no rompe nada */ }
+    }
+
+    // Punto de reemplazo futuro: hoy resuelve local, mañana puede hacer
+    // fetch('/api/tarot/draw') y devolver { cardId, reversed } del backend.
+    function drawTodayCard() {
+      const existing = getStoredDraw();
+      if (existing) {
+        return Promise.resolve(existing);
+      }
+      const card = TAROT_ARCANA[Math.floor(Math.random() * TAROT_ARCANA.length)];
+      const reversed = Math.random() < 0.5;
+      storeDraw(card.id, reversed);
+      return Promise.resolve({ cardId: card.id, reversed, isNew: true });
+    }
+
+    function renderCard(card, reversed) {
+      numberEl.textContent = card.numeral;
+      nameEl.textContent = card.name;
+      orientationEl.textContent = reversed ? 'Invertida' : 'Derecha';
+      artEl.innerHTML = '<img src="' + card.image + '" alt="' + card.name + '" ' +
+        'onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{textContent:\'✦\'}))">';
+
+      cardBtn.classList.toggle('tarot-reversed', reversed);
+
+      const orientationData = reversed ? card.reversed : card.upright;
+      readingTitleEl.textContent = card.numeral + ' · ' + card.name;
+      readingOrientationEl.textContent = reversed ? 'Invertida' : 'Derecha';
+      readingMeaningEl.textContent = orientationData.meaning;
+      readingDescEl.textContent = orientationData.description;
+    }
+
+    function showReading() {
+      readingEl.hidden = false;
+      requestAnimationFrame(() => readingEl.classList.add('visible'));
+    }
+
+    function revealCard(card, reversed, animated) {
+      renderCard(card, reversed);
+      cardBtn.classList.add('tarot-revealed');
+      hintEl.textContent = '';
+
+      if (animated && !prefersReducedMotion) {
+        cardBtn.classList.add('tarot-flipped');
+        setTimeout(showReading, 950);
+      } else {
+        cardBtn.classList.add('tarot-flipped');
+        showReading();
+      }
+    }
+
+    // Al cargar: si ya se tiró carta hoy, mostrarla directo (sin animación).
+    const existingDraw = getStoredDraw();
+    if (existingDraw) {
+      const card = TAROT_ARCANA[existingDraw.cardId];
+      if (card) revealCard(card, existingDraw.reversed, false);
+    }
+
+    cardBtn.addEventListener('click', () => {
+      if (cardBtn.classList.contains('tarot-revealed')) return;
+
+      statusEl.textContent = '';
+      cardBtn.disabled = true;
+
+      drawTodayCard()
+        .then(({ cardId, reversed }) => {
+          const card = TAROT_ARCANA[cardId];
+          if (!card) throw new Error('Carta no encontrada');
+          revealCard(card, reversed, true);
+        })
+        .catch(() => {
+          statusEl.classList.add('error');
+          statusEl.textContent = 'No pudimos revelar tu carta. Intentá nuevamente.';
+        })
+        .finally(() => {
+          cardBtn.disabled = false;
+        });
+    });
   })();
   </script>
 
