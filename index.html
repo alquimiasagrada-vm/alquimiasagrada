@@ -15,72 +15,85 @@
      hace que el navegador empiece a descargarlas en paralelo con el HTML,
      en vez de recién enterarse de que las necesita cuando ya calculó los
      estilos — que es lo que causa el salto/demora de 1-2s. -->
-<link rel="preload" href="assets/fonts/Tangerine-Bold.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="preload" href="assets/fonts/Tangerine-Regular.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="preload" href="assets/fonts/CormorantGaramond-Italic.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="assets/fonts/Tangerine-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Tangerine-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/CormorantGaramond-Italic.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Tipografías: auto-alojadas en assets/fonts/ (ver bloque @font-face mas abajo) -->
 
 <style>
   /* =========================================
      TIPOGRAFÍAS AUTO-ALOJADAS
-     Colocá los archivos reales en assets/fonts/ (mismo nombre exacto).
-     Mientras no estén, el navegador cae directo a la fuente de reemplazo
-     definida en --font-heading/--font-script/--font-body (sin roturas).
+     woff2 primero (liviano, ~92% más chico) con .ttf como respaldo para
+     navegadores muy viejos que no lo soporten. Colocá ambos archivos en
+     assets/fonts/ (mismo nombre exacto). Mientras no estén, el navegador
+     cae directo a la fuente de reemplazo definida en
+     --font-heading/--font-script/--font-body (sin roturas).
      ========================================= */
   @font-face {
     font-family: 'Cormorant Garamond';
-    src: url('assets/fonts/CormorantGaramond-Regular.ttf') format('truetype');
+    src: url('assets/fonts/CormorantGaramond-Regular.woff2') format('woff2'),
+         url('assets/fonts/CormorantGaramond-Regular.ttf') format('truetype');
     font-weight: 400; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'Cormorant Garamond';
-    src: url('assets/fonts/CormorantGaramond-SemiBold.ttf') format('truetype');
+    src: url('assets/fonts/CormorantGaramond-SemiBold.woff2') format('woff2'),
+         url('assets/fonts/CormorantGaramond-SemiBold.ttf') format('truetype');
     font-weight: 600; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'Cormorant Garamond';
-    src: url('assets/fonts/CormorantGaramond-Bold.ttf') format('truetype');
+    src: url('assets/fonts/CormorantGaramond-Bold.woff2') format('woff2'),
+         url('assets/fonts/CormorantGaramond-Bold.ttf') format('truetype');
     font-weight: 700; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'Cormorant Garamond';
-    src: url('assets/fonts/CormorantGaramond-Italic.ttf') format('truetype');
+    src: url('assets/fonts/CormorantGaramond-Italic.woff2') format('woff2'),
+         url('assets/fonts/CormorantGaramond-Italic.ttf') format('truetype');
     font-weight: 400; font-style: italic; font-display: swap;
   }
   @font-face {
     font-family: 'Cormorant Garamond';
-    src: url('assets/fonts/CormorantGaramond-SemiBoldItalic.ttf') format('truetype');
+    src: url('assets/fonts/CormorantGaramond-SemiBoldItalic.woff2') format('woff2'),
+         url('assets/fonts/CormorantGaramond-SemiBoldItalic.ttf') format('truetype');
     font-weight: 600; font-style: italic; font-display: swap;
   }
   @font-face {
     font-family: 'Tangerine';
-    src: url('assets/fonts/Tangerine-Regular.ttf') format('truetype');
+    src: url('assets/fonts/Tangerine-Regular.woff2') format('woff2'),
+         url('assets/fonts/Tangerine-Regular.ttf') format('truetype');
     font-weight: 400; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'Tangerine';
-    src: url('assets/fonts/Tangerine-Bold.ttf') format('truetype');
+    src: url('assets/fonts/Tangerine-Bold.woff2') format('woff2'),
+         url('assets/fonts/Tangerine-Bold.ttf') format('truetype');
     font-weight: 700; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'Manrope';
-    src: url('assets/fonts/Manrope-Light.ttf') format('truetype');
+    src: url('assets/fonts/Manrope-Light.woff2') format('woff2'),
+         url('assets/fonts/Manrope-Light.ttf') format('truetype');
     font-weight: 300; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'Manrope';
-    src: url('assets/fonts/Manrope-Regular.ttf') format('truetype');
+    src: url('assets/fonts/Manrope-Regular.woff2') format('woff2'),
+         url('assets/fonts/Manrope-Regular.ttf') format('truetype');
     font-weight: 400; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'Manrope';
-    src: url('assets/fonts/Manrope-Medium.ttf') format('truetype');
+    src: url('assets/fonts/Manrope-Medium.woff2') format('woff2'),
+         url('assets/fonts/Manrope-Medium.ttf') format('truetype');
     font-weight: 500; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'Manrope';
-    src: url('assets/fonts/Manrope-SemiBold.ttf') format('truetype');
+    src: url('assets/fonts/Manrope-SemiBold.woff2') format('woff2'),
+         url('assets/fonts/Manrope-SemiBold.ttf') format('truetype');
     font-weight: 600; font-style: normal; font-display: swap;
   }
 
