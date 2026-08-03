@@ -1123,6 +1123,7 @@
     width: min(62vw, 250px);
     aspect-ratio: 5/8;
     margin: 0 auto;
+    -webkit-perspective: 1400px;
     perspective: 1400px;
     border: none;
     background: none;
@@ -1130,6 +1131,12 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    /* El drop-shadow va acá (afuera del elemento 3D) y no en
+       .tarot-card-inner: aplicar filter junto con transform-style:
+       preserve-3d en el MISMO elemento aplana el contexto 3D en varios
+       navegadores (sobre todo Safari/iOS), y el giro de la tarjeta deja de
+       funcionar como una vuelta real. */
+    filter: drop-shadow(0 14px 34px rgba(28, 49, 68, 0.28));
   }
   .tarot-card-single:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 14px; }
   .tarot-card-single.tarot-revealed { cursor: default; }
@@ -1138,14 +1145,16 @@
     position: relative;
     width: 100%;
     height: 100%;
+    -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    transition: transform 1s cubic-bezier(0.4, 0.15, 0.2, 1);
-    filter: drop-shadow(0 14px 34px rgba(28, 49, 68, 0.28));
+    transition: -webkit-transform 1s cubic-bezier(0.4, 0.15, 0.2, 1), transform 1s cubic-bezier(0.4, 0.15, 0.2, 1);
   }
   .tarot-card-single.tarot-flipped .tarot-card-inner {
+    -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
   }
   .tarot-card-single:not(.tarot-revealed):hover .tarot-card-inner {
+    -webkit-transform: translateY(-6px);
     transform: translateY(-6px);
   }
 
@@ -1198,6 +1207,7 @@
   }
 
   .tarot-face-front {
+    -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
   }
   .tarot-face-front .tarot-face-clip {
@@ -2631,3 +2641,4 @@
 
 </body>
 </html>
+
