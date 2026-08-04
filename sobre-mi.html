@@ -87,6 +87,98 @@
     color: var(--teal);
   }
 
+  /* ---------- Carrete de fotos ----------
+     Scroll nativo con scroll-snap: el desplazamiento lo maneja el propio
+     navegador (no JS moviendo posiciones), así que es liviano incluso en
+     celulares de gama baja. El autoplay solo hace scrollTo() cada tanto;
+     no hay ningún loop de animación corriendo todo el tiempo. */
+  .gallery-section {
+    margin-bottom: 3rem;
+  }
+  .gallery-wrap {
+    position: relative;
+  }
+  .gallery-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 18px;
+    border: 1px solid var(--gold-dim);
+    box-shadow: 0 10px 30px rgba(28, 49, 68, 0.08);
+    /* Oculta la barra de scroll nativa sin quitarle la función */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .gallery-track::-webkit-scrollbar { display: none; }
+
+  .gallery-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    aspect-ratio: 4 / 3;
+    background: #e2d6c1;
+  }
+  .gallery-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-dim);
+    background: rgba(255, 250, 240, 0.88);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: var(--ink);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .gallery-arrow:hover {
+    border-color: var(--gold);
+    transform: translateY(-50%) scale(1.08);
+  }
+  .gallery-prev { left: 10px; }
+  .gallery-next { right: 10px; }
+
+  .gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0.9rem;
+  }
+  .gallery-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: var(--gold-dim);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .gallery-dot.active {
+    background: var(--gold);
+    transform: scale(1.25);
+  }
+
+  @media (max-width: 560px) {
+    .gallery-arrow { width: 34px; height: 34px; font-size: 1.2rem; }
+  }
+
   /* Tarjetas de Historial Académico y Profesional */
   .timeline-section {
     display: flex; flex-direction: column; gap: 2.5rem;
@@ -201,6 +293,23 @@
       <p class="about-subtitle">Camino de integración holística y estelar</p>
     </div>
 
+    <!-- CARRETE DE FOTOS -->
+    <section class="gallery-section" aria-label="Galería de fotos de sesiones y encuentros">
+      <div class="gallery-wrap">
+        <button type="button" class="gallery-arrow gallery-prev" id="galleryPrev" aria-label="Foto anterior">‹</button>
+        <div class="gallery-track" id="galleryTrack">
+          <div class="gallery-slide"><img src="assets/img/carrusel/sobre-mi-1.jpg" alt="Encuentro grupal de cierre de formación" loading="lazy"></div>
+          <div class="gallery-slide"><img src="assets/img/carrusel/sobre-mi-2.jpg" alt="Sesión grupal de sintonización energética" loading="lazy"></div>
+          <div class="gallery-slide"><img src="assets/img/carrusel/sobre-mi-3.jpg" alt="Momento de contención y acompañamiento" loading="lazy"></div>
+          <div class="gallery-slide"><img src="assets/img/carrusel/sobre-mi-4.jpg" alt="Trabajo corporal en grupo" loading="lazy"></div>
+          <div class="gallery-slide"><img src="assets/img/carrusel/sobre-mi-5.jpg" alt="Grupo de consultantes tras una jornada de formación" loading="lazy"></div>
+          <div class="gallery-slide"><img src="assets/img/carrusel/sobre-mi-6.jpg" alt="Abrazo de cierre entre consultantes" loading="lazy"></div>
+        </div>
+        <button type="button" class="gallery-arrow gallery-next" id="galleryNext" aria-label="Foto siguiente">›</button>
+      </div>
+      <div class="gallery-dots" id="galleryDots"></div>
+    </section>
+
     <div class="timeline-section">
       
       <!-- HISTORIAL PROFESIONAL -->
@@ -296,5 +405,97 @@
     }
   </script>
 
+  <script>
+    // Carrete de fotos: scroll nativo con scroll-snap (el navegador hace
+    // todo el trabajo de desplazamiento). El JS solo decide CUÁNDO
+    // moverse: autoplay cada 4.5s, flechas, puntos, y pausas cuando el
+    // usuario interactúa o cuando la pestaña no está visible.
+    (function () {
+      const track = document.getElementById('galleryTrack');
+      if (!track) return;
+
+      const slides = Array.from(track.children);
+      const dotsWrap = document.getElementById('galleryDots');
+      const prevBtn = document.getElementById('galleryPrev');
+      const nextBtn = document.getElementById('galleryNext');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      let current = 0;
+      let autoplayTimer = null;
+      let resumeTimer = null;
+      let isSyncingFromScroll = false;
+
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Ir a la foto ' + (i + 1));
+        dot.addEventListener('click', () => { goTo(i); pauseAutoplayTemporarily(); });
+        dotsWrap.appendChild(dot);
+      });
+      const dots = Array.from(dotsWrap.children);
+
+      function updateDots() {
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      }
+
+      function goTo(index, behavior) {
+        current = (index + slides.length) % slides.length;
+        isSyncingFromScroll = true;
+        track.scrollTo({
+          left: slides[current].offsetLeft,
+          behavior: behavior || (prefersReducedMotion ? 'auto' : 'smooth')
+        });
+        updateDots();
+        // Libera el flag de sincronización una vez terminado el scroll
+        window.setTimeout(() => { isSyncingFromScroll = false; }, 500);
+      }
+
+      function startAutoplay() {
+        if (prefersReducedMotion || document.hidden) return;
+        stopAutoplay();
+        autoplayTimer = window.setInterval(() => goTo(current + 1), 4500);
+      }
+      function stopAutoplay() {
+        if (autoplayTimer) { window.clearInterval(autoplayTimer); autoplayTimer = null; }
+      }
+      function pauseAutoplayTemporarily() {
+        stopAutoplay();
+        window.clearTimeout(resumeTimer);
+        resumeTimer = window.setTimeout(startAutoplay, 6000);
+      }
+
+      prevBtn.addEventListener('click', () => { goTo(current - 1); pauseAutoplayTemporarily(); });
+      nextBtn.addEventListener('click', () => { goTo(current + 1); pauseAutoplayTemporarily(); });
+
+      // Si el usuario desliza con el dedo o el mouse, no lo interrumpimos:
+      // solo pausamos el autoplay un rato y, cuando termina de deslizar,
+      // detectamos a qué foto quedó más cerca para sincronizar los puntos.
+      track.addEventListener('touchstart', pauseAutoplayTemporarily, { passive: true });
+      track.addEventListener('mousedown', pauseAutoplayTemporarily);
+
+      let scrollSettleTimer = null;
+      track.addEventListener('scroll', () => {
+        if (isSyncingFromScroll) return;
+        window.clearTimeout(scrollSettleTimer);
+        scrollSettleTimer = window.setTimeout(() => {
+          const idx = Math.round(track.scrollLeft / track.clientWidth);
+          current = Math.max(0, Math.min(slides.length - 1, idx));
+          updateDots();
+        }, 120);
+      }, { passive: true });
+
+      // Ahorra batería/CPU: no sigue moviendo el carrete si la pestaña
+      // está en segundo plano.
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopAutoplay();
+        else startAutoplay();
+      });
+
+      startAutoplay();
+    })();
+  </script>
+
 </body>
 </html>
+
