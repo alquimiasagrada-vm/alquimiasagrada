@@ -899,6 +899,29 @@
     .tarot-position-label { font-size: 0.72rem; }
   }
 
+  /* ---- Carrusel en mobile: una carta grande al centro, dos espiando a
+     los costados. Se activa solo bajo este breakpoint — en desktop la
+     tirada sigue siendo la fila de 3 de siempre, sin cambios. ---- */
+  @media (max-width: 640px) {
+    .tarot-spread.tarot-spread--coverflow {
+      position: relative;
+      height: 360px;
+      display: block;
+      flex-wrap: nowrap;
+    }
+    .tarot-spread--coverflow .tarot-slot {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: min(58vw, 190px);
+      transition: transform 0.5s cubic-bezier(0.4, 0.15, 0.2, 1), opacity 0.5s ease;
+      cursor: pointer;
+    }
+    .tarot-spread--coverflow .tarot-slot .tarot-card-single {
+      cursor: pointer;
+    }
+  }
+
   .tarot-card-single {
     position: relative;
     width: min(62vw, 250px);
@@ -2438,6 +2461,7 @@
       POSITIONS.forEach((pos, i) => {
         const slot = document.createElement('div');
         slot.className = 'tarot-slot';
+        slot.dataset.index = String(i);
         slot.innerHTML =
           '<span class="tarot-position-label">' + pos.label + '</span>' +
           '<button type="button" class="tarot-card-single" id="tarot-card-' + i + '" aria-label="Revelar carta: ' + pos.label + '">' +
@@ -2537,6 +2561,44 @@
 
     buildSpread();
 
+    // ---- Carrusel mobile: una carta grande al centro, dos espiando a los
+    // costados. En desktop este bloque no hace nada visible (la media
+    // query que activa el layout absoluto no aplica ahí). ----
+    const COVERFLOW_QUERY = window.matchMedia('(max-width: 640px)');
+    let activeIndex = 1; // arranca con la carta del medio al centro
+
+    function applyCoverflowLayout() {
+      const coverflow = COVERFLOW_QUERY.matches;
+      spreadEl.classList.toggle('tarot-spread--coverflow', coverflow);
+
+      spreadEl.querySelectorAll('.tarot-slot').forEach((slot) => {
+        if (!coverflow) {
+          slot.style.transform = '';
+          slot.style.zIndex = '';
+          slot.style.opacity = '';
+          return;
+        }
+        const i = Number(slot.dataset.index);
+        const delta = i - activeIndex; // -2..2 posible con 3 cartas
+        const absDelta = Math.min(Math.abs(delta), 2);
+        const scale = 1 - absDelta * 0.2;
+        const tx = delta * 62;
+        const rot = delta * 5;
+        slot.style.transform = 'translate(calc(-50% + ' + tx + 'px), 0) scale(' + scale + ') rotate(' + rot + 'deg)';
+        slot.style.zIndex = String(10 - absDelta);
+        slot.style.opacity = absDelta === 0 ? '1' : (absDelta === 1 ? '0.82' : '0.5');
+      });
+    }
+
+    applyCoverflowLayout();
+    // Si el usuario rota el celular o cruza el breakpoint, reacomodar.
+    if (COVERFLOW_QUERY.addEventListener) {
+      COVERFLOW_QUERY.addEventListener('change', applyCoverflowLayout);
+    }
+    window.addEventListener('resize', () => {
+      if (COVERFLOW_QUERY.matches) applyCoverflowLayout();
+    });
+
     // Al cargar: si ya se tiró la tirada hoy, mostrarla directo (sin animación).
     const existingSpread = getStoredSpread();
     if (existingSpread) {
@@ -2544,8 +2606,20 @@
     }
 
     spreadEl.addEventListener('click', (e) => {
-      if (revealed) return;
-      if (!e.target.closest('.tarot-card-single')) return;
+      const btn = e.target.closest('.tarot-card-single');
+      if (!btn) return;
+      const slot = btn.closest('.tarot-slot');
+      const i = Number(slot.dataset.index);
+
+      // En mobile, si tocaste una carta lateral, primero la centramos —
+      // recién un segundo toque (ya en el centro) revela la tirada.
+      if (COVERFLOW_QUERY.matches && i !== activeIndex) {
+        activeIndex = i;
+        applyCoverflowLayout();
+        return;
+      }
+
+      if (revealed) return; // ya centrada y ya revelada: no hay más acción
 
       statusEl.textContent = '';
       spreadEl.querySelectorAll('.tarot-card-single').forEach(b => b.disabled = true);
@@ -2565,4 +2639,3 @@
 
 </body>
 </html>
-
