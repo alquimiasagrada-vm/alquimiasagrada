@@ -2631,21 +2631,38 @@
 
     // Punto de reemplazo futuro: hoy resuelve local, mañana puede hacer
     // fetch('/api/tarot/draw') y devolver { cards: [{cardId,reversed} x3], synthesisIndex }.
-    function drawTodaySpread() {
-      const existing = getStoredSpread();
-      if (existing) return Promise.resolve(existing);
+function drawTodaySpread() {
+  const existing = getStoredSpread();
+  if (existing) return Promise.resolve(existing);
 
-      // 3 cartas distintas (sin repetir), cada una derecha o invertida al azar.
-      const shuffled = [...TAROT_ARCANA].sort(() => Math.random() - 0.5);
-      const cards = shuffled.slice(0, 3).map(c => ({
-        cardId: c.id,
-        reversed: Math.random() < 0.5
-      }));
-      const synthesisIndex = Math.floor(Math.random() * 2);
+  // 3 cartas distintas (sin repetir), cada una derecha o invertida al azar.
+  const shuffled = [...TAROT_ARCANA].sort(() => Math.random() - 0.5);
+  const cards = shuffled.slice(0, 3).map(c => ({
+    cardId: c.id,
+    reversed: Math.random() < 0.5
+  }));
 
-      storeSpread(cards, synthesisIndex);
-      return Promise.resolve({ date: todayKey(), cards, synthesisIndex });
+  // Leemos la tirada anterior del localStorage para no repetir la frase de cierre
+  let lastIndex = null;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      lastIndex = parsed.synthesisIndex;
     }
+  } catch (e) { /* ignore */ }
+
+  // Elegimos un índice al azar asegurando que no sea el mismo de ayer
+  // y que busque dentro del total de frases disponibles (50 por categoría)
+  let synthesisIndex;
+  const maxOptions = SYNTHESIS[0].length; 
+  do {
+    synthesisIndex = Math.floor(Math.random() * maxOptions);
+  } while (synthesisIndex === lastIndex && maxOptions > 1);
+
+  storeSpread(cards, synthesisIndex);
+  return Promise.resolve({ date: todayKey(), cards, synthesisIndex });
+}
 
     // Arma los 3 slots (posición + carta) dentro de #tarot-spread.
     function buildSpread() {
